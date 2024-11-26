@@ -14,8 +14,11 @@ Características:
 - Aplicación hecho en html, javascript, nodejs.
 https://github.com/playmepe/BibliaPlayWeb/blob/main/aplicaciones.png
 ![2023-12-07_16-44](https://github.com/playmepe/BibliaPlayWeb/blob/main/aplicaciones.png)
-![2023-12-07_19-24](https://github.com/playmepe/BibliaPlay/assets/13964250/b412a660-3625-4fee-923c-59f7a857d7dc)
-![2023-12-07_19-29](https://github.com/playmepe/BibliaPlay/assets/13964250/dfd4e68b-5d22-4aee-b3bb-abfacbb29572)
+![2023-12-07_19-24](https://github.com/playmepe/BibliaPlayWeb/blob/main/screen.jpg)
+![2023-12-07_19-29](https://github.com/playmepe/BibliaPlayWeb/blob/main/multimedia.png)
+![2023-12-07_19-29](https://github.com/playmepe/BibliaPlayWeb/blob/main/principal.png)
+![2023-12-07_19-29](https://github.com/playmepe/BibliaPlayWeb/blob/main/lyrics.png)
+![2023-12-07_19-29](https://github.com/playmepe/BibliaPlayWeb/blob/main/b%C3%BAsqueda.png)
 
 Soporte de instalación con donación desde este link: https://www.paypal.com/donate/?hosted_button_id=DBFEBYRRHWXHU
 <a href="https://www.paypal.com/donate/?hosted_button_id=DBFEBYRRHWXHU"><img src="https://github.com/playmepe/BibliaPlay/assets/13964250/286e74e7-db2a-41b7-8230-2576b098bbf4" alt="" width="150"   height="131"/></a>
