@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 30px;
+            font-family: Arial, sans-serif;
+            background-color: #043d1f;
+            color: #333;
+            display: flex;
+            justify-content: normal;
+            align-items: center;
+            height: 100vh; /* Ocupa toda la altura de la ventana */
+            flex-direction: column;
+        }
+        #background-image {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 800px;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.2;
+        }
+        #title {
+            border-radius: 8px;
+            background-color: #f5f5f5;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        #content-box {
+            background-color: #a2f9cb;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 98%;
+            height: 98%; /* Altura del área de texto */
+            margin: 10px;
+             align-items: center;
+        }
+        textarea {
+            width: 96%;
+            height: 90%; /* Altura del área de texto */
+            margin: 3px;
+            max-height: 800px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 0px solid #ccc;
+            padding: 30px;
+            resize: none; /* Evitar que el usuario cambie el tamaño */
+            margin: 10px;
+        }
+    </style>
+    <title>Prédica hoy</title>
+</head>
+<body>
+    <div id="title"><h1>Prédica de hoy:</h1></div>
+    <div id="content-box">
+        <textarea id="file-content"></textarea>
+        <button id="save-button">Guardar Contenido</button>
+        <button id="whatsapp-group-button">Enviar a Grupo de WhatsApp</button>
+        <button id="whatsapp-button">Enviar por WhatsApp</button>
+    </div>
+    <img id="background-image" src="" alt="Fondo">
+
+    <script>
+        // Obtener el contenido del archivo y mostrarlo
+        fetch('/output')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('file-content').value = data;
+                const whatsappGroupButton = document.getElementById('whatsapp-group-button');
+                const groupLink = 'https://chat.whatsapp.com/<enlace-del-grupo>'; // Reemplaza con el enlace del grupo
+                const message = encodeURIComponent(data);
+
+                whatsappGroupButton.onclick = () => {
+                    window.open(groupLink, '_blank');
+                    console.log(`Sugerido para copiar y pegar: ${data}`);
+                };
+
+                const whatsappButton = document.getElementById('whatsapp-button');
+                const phoneNumber = '51953689485'; // Reemplaza con el número de teléfono deseado
+                const message1 = encodeURIComponent(data);
+
+                whatsappButton.onclick = () => {
+                    window.open(`https://wa.me/${phoneNumber}?text=${message1}`, '_blank');
+                };
+
+
+
+             const saveButton = document.getElementById('save-button');
+                saveButton.onclick = () => {
+                    const editedContent = document.getElementById('file-content').value;
+
+                    // Enviar el contenido editado al servidor
+                    fetch('/save', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ content: editedContent })
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Contenido guardado exitosamente.');
+                        } else {
+                            alert('Error al guardar el contenido.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error al enviar el contenido:', error);
+                    });
+                };
+            })
+            .catch(error => {
+                console.error('Error al cargar el contenido:', error);
+            });
+
+
+        // Cargar una imagen aleatoria
+        const loadRandomImage = () => {
+            fetch('/datosimagen/images-info.json')
+                .then(response => response.json())
+                .then(data => {
+                    const imagePaths = data.map(item => item.path);
+                    const randomIndex = Math.floor(Math.random() * imagePaths.length);
+                    document.getElementById('background-image').src = imagePaths[randomIndex];
+                })
+                .catch(error => console.error('Error al cargar la información de la imagen:', error));
+        };
+        loadRandomImage();
+    </script>
+</body>
+</html>

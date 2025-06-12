@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temporizador</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000000; /* Color de fondo inicial */
+            color: white;
+            overflow: hidden; /* Evita barras de desplazamiento */
+            transition: background-color 0.5s; /* Transición suave entre colores */
+        }
+        #timerDisplay {
+            font-size: 25vw; /* Tamaño del texto en relación al ancho de la pantalla */
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="timerDisplay">
+        <span id="countdown">00:00:00</span>
+    </div>
+
+    <script>
+    const socket = io(); // Conectar con el servidor
+    let remainingTime = 0;
+    let endTime = 0;
+    let isPaused = true;
+    let hideHours = false;
+    let blinkInterval; // Variable para controlar el intervalo de intermitencia
+
+    function updateTimer() {
+        const countdownElement = document.getElementById('countdown');
+        let formattedTime = formatTime(remainingTime);
+
+        countdownElement.innerText = hideHours ? formattedTime.substr(3) : formattedTime;
+
+        // Ajustar el tamaño de la fuente
+        let timerDisplay = document.getElementById('timerDisplay');
+        if (hideHours) {
+            timerDisplay.style.fontSize = '38vw'; // Tamaño para minutos y segundos
+        } else {
+            timerDisplay.style.fontSize = '25vw'; // Tamaño para horas, minutos y segundos
+        }
+
+        if (remainingTime <= 0) {
+            remainingTime = 0;
+            stopTimer();
+        } else {
+            remainingTime = endTime - Date.now();
+            if (remainingTime <= 0) {
+                remainingTime = 0;
+                stopTimer();
+            }
+        }
+
+        // Cambiar el fondo a rojo intermitentemente cuando queden 10 segundos o menos
+        if (remainingTime <= 10000 && remainingTime > 0) {
+            if (!blinkInterval) {
+                startBlinking();
+            }
+        } else {
+            if (blinkInterval) {
+                stopBlinking();
+                document.body.style.backgroundColor = '#000000'; // Restaurar el color de fondo
+            }
+        }
+    }
+
+    function formatTime(ms) {
+        if (isNaN(ms)) {
+            return '00:00:00';
+        }
+
+        let hours = Math.floor(ms / 3600000);
+        let minutes = Math.floor((ms % 3600000) / 60000);
+        let seconds = Math.floor((ms % 60000) / 1000);
+
+        let hoursStr = padTime(hours);
+        let minutesStr = padTime(minutes);
+        let secondsStr = padTime(seconds);
+
+        return `${hoursStr}:${minutesStr}:${secondsStr}`;
+    }
+
+    function padTime(time) {
+        return (time < 10 ? '0' : '') + time;
+    }
+
+    function startBlinking() {
+        blinkInterval = setInterval(() => {
+            document.body.style.backgroundColor =
+                document.body.style.backgroundColor === 'red' ? '#000000' : 'red';
+        }, 500); // Alternar cada 500 ms
+    }
+
+    function stopBlinking() {
+        clearInterval(blinkInterval);
+        blinkInterval = null;
+    }
+
+    function stopTimer() {
+        if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+    }
+
+    // Manejar actualizaciones del temporizador desde el servidor
+    socket.on('timerState', (state) => {
+        remainingTime = state.remainingTime;
+        endTime = state.endTime;
+        isPaused = state.isPaused;
+        hideHours = state.hideHours;
+        updateTimer();
+    });
+
+    // Actualizar el temporizador cada segundo
+    setInterval(() => {
+        if (!isPaused) {
+            updateTimer();
+        }
+    }, 1000);
+    </script>
+</body>
+</html>

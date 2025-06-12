@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Temporizador</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #6f9b87; /* Color de fondo del encabezado */
+            color: white; /* Color del texto */
+            padding: 2px 2px; /* Espaciado del encabezado */
+            position: sticky; /* Fijar en la parte superior al desplazar */
+            top: 0; /* Mantener en la parte superior */
+            z-index: 1000; /* Asegurar que esté encima de otros elementos */
+             text-align: center;
+             display: flex;
+            overflow: hidden;
+        }
+        #timerDisplay {
+            font-size: 6vw;
+            text-align: center;
+            margin: 0px;
+        }
+        #segButton {
+
+            background-color: #79a52d;
+
+        }
+        #csegButton {
+            padding: 5px;
+            background-color: #861108;
+height: 50px;
+        }
+        button {
+        width: 55px;
+
+            font-size: 12px;
+            margin: 1px;
+
+            padding: 9px;
+            background-color: #88d277;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+        }
+button:hover {
+    background-color: #e64a19;
+}
+#segButton:hover {
+    background-color: #e64a19;
+}
+#csegButton:hover {
+    background-color: #e64a19;
+}
+        input {
+            font-size: 15px;
+            margin: 5px;
+
+             width: 40px;
+            height: 10px;
+            padding: 8px;
+            margin-bottom: 4px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 0 1px;
+            margin-top: 1px;
+        }
+        label {
+            font-size: 14px;
+            margin: 0px;
+        }
+        #segsButton {
+            align-items: center;
+
+}
+ .time-input {
+            display: flex;
+            align-items: center; /* Alinea verticalmente el contenido */
+        }
+
+        .time-input label {
+            margin-right: 5px; /* Espacio entre la etiqueta y el input */
+        }
+        .checkbox-container {
+            display: flex;
+            align-items: center; /* Alinea verticalmente el contenido */
+            background-color: #2da56f; /* Color de fondo */
+            padding: 4px; /* Espaciado interno */
+            border-radius: 5px; /* Bordes redondeados */
+            margin: 0 1px;
+            border: 1px solid #ddd;
+        }
+
+        .checkbox-container label {
+            margin-right: 4px; /* Espacio entre la etiqueta y el checkbox */
+        }
+    </style>
+</head>
+<body>
+
+
+<div><div class="checkbox-container"><div id="timerDisplay">Tiempo: <span id="countdown"><h1>00:00:00</h1></span></div></div>
+    <div class="checkbox-container">
+        <label for="hoursInput">Hr:</label>
+        <input type="number" id="hoursInput" value="0" min="0">
+    </div>
+
+    <div class="checkbox-container"><label for="minutesInput">Min:</label>
+    <input type="number" id="minutesInput" value="0" min="0" max="59"></div>
+
+    <div class="checkbox-container"><label for="secondsInput">Seg:</label>
+    <input type="number" id="secondsInput" value="0" min="0" max="59"></div>
+   <div class="checkbox-container">
+        <label for="hideHoursCheckbox">Ocultar Hora:</label>
+        <input type="checkbox" id="hideHoursCheckbox" checked onchange="toggleHideHours()">
+    </div>
+
+</div>
+    <div class="checkbox-container"><div id="button2">
+    <button   id="csegButton" onclick="setInitialTime()" >Cargar e Iniciar</button>
+<!--   <button onclick="controlTimer('start')">Iniciar</button>-->
+    <button   id="csegButton" onclick="controlTimer('pause')" >Pausar</button>
+    <button   id="csegButton" onclick="controlTimer('resume')" >Rea- nudar</button>
+    <button   id="csegButton" onclick="controlTimer('stop')"  >Detener</button>
+
+
+</div>
+</div>
+    <div class="checkbox-container"><div id="segsButton">
+        <button  id="segButton" onclick="setPresetTime(5)">5 seg</button>
+        <button  id="segButton"  onclick="setPresetTime(10)">10 seg</button>
+        <button  id="segButton"  onclick="setPresetTime(15)">15 seg</button>
+        <button  id="segButton"  onclick="setPresetTime(20)">20 seg</button>
+        <button  id="segButton"  onclick="setPresetTime(25)">25 seg</button>
+        <button  id="segButton"  onclick="setPresetTime(30)">30 seg</button>
+        <button  id="segButton"  onclick="setPresetTime(35)">35 seg</button>
+        <button  id="segButton"  onclick="setPresetTime(40)">40 seg</button>
+        <button  id="segButton"  onclick="setPresetTime(45)">45 seg</button>
+        <button  id="segButton"  onclick="setPresetTime(50)">50 seg</button>
+        <button  id="segButton"  onclick="setPresetTime(55)">55 seg</button>
+        <button  id="segButton"  onclick="setPresetTime(59)">59 seg</button>
+    </div>
+</div>
+    <div class="checkbox-container"><div id="segsButton">
+        <button onclick="setPresetTimeM(5)">5 Min</button>
+        <button onclick="setPresetTimeM(10)">10 Min</button>
+        <button onclick="setPresetTimeM(15)">15 Min</button>
+        <button onclick="setPresetTimeM(20)">20 Min</button>
+        <button onclick="setPresetTimeM(25)">25 Min</button>
+        <button onclick="setPresetTimeM(30)">30 Min</button>
+        <button onclick="setPresetTimeM(35)">35 Min</button>
+        <button onclick="setPresetTimeM(40)">40 Min</button>
+        <button onclick="setPresetTimeM(45)">45 Min</button>
+        <button onclick="setPresetTimeM(50)">50 Min</button>
+        <button onclick="setPresetTimeM(55)">55 Min</button>
+        <button onclick="setPresetTimeM(60)">60 Min</button>
+    </div>
+</div>
+    <script>
+    const socket = io(); // Conectar con el servidor
+    let timerInterval;
+    let remainingTime = 0;
+    let endTime = 0;
+    let isPaused = true;
+    let hideHours = false;
+
+    // Función para actualizar el temporizador mostrado
+    function updateTimer() {
+        const countdownElement = document.getElementById('countdown');
+        let formattedTime = formatTime(remainingTime);
+        countdownElement.innerText = hideHours ? formattedTime.substr(3) : formattedTime;
+
+        if (remainingTime <= 0) {
+            stopTimer();
+        } else {
+            remainingTime = endTime - Date.now();
+            if (remainingTime <= 0) {
+                remainingTime = 0;
+                stopTimer();
+            }
+        }
+    }
+
+    function formatTime(ms) {
+        if (isNaN(ms)) {
+            return '00:00:00';
+        }
+
+        let hours = Math.floor(ms / 3600000);
+        let minutes = Math.floor((ms % 3600000) / 60000);
+        let seconds = Math.floor((ms % 60000) / 1000);
+
+        let hoursStr = padTime(hours);
+        let minutesStr = padTime(minutes);
+        let secondsStr = padTime(seconds);
+
+        return `${hoursStr}:${minutesStr}:${secondsStr}`;
+    }
+
+    function padTime(time) {
+        return (time < 10 ? '0' : '') + time;
+    }
+
+    function startTimer() {
+        if (isPaused && remainingTime > 0) {
+            isPaused = false;
+            endTime = Date.now() + remainingTime;
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+    }
+
+    function stopTimer() {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        isPaused = true;
+    }
+
+    function controlTimer(action) {
+        socket.emit('controlTimer', { action });
+    }
+
+    function setInitialTime() {
+        const hours = parseInt(document.getElementById('hoursInput').value, 10) || 0;
+        const minutes = parseInt(document.getElementById('minutesInput').value, 10) || 0;
+        const seconds = parseInt(document.getElementById('secondsInput').value, 10) || 0;
+        const totalMilliseconds = (hours * 3600 + minutes * 60 + seconds) * 1000;
+        socket.emit('setInitialTime', totalMilliseconds);
+    }
+
+    function toggleHideHours() {
+        hideHours = document.getElementById('hideHoursCheckbox').checked;
+        socket.emit('toggleHideHours', hideHours);
+    }
+
+    function setPresetTime(seconds) {
+        const totalMilliseconds = seconds * 1000;
+        socket.emit('setInitialTime', totalMilliseconds);
+    }
+
+    function setPresetTimeM(minutes) {
+        const totalMilliseconds = minutes * 60 * 1000;
+        socket.emit('setInitialTime', totalMilliseconds);
+    }
+
+    // Manejar actualizaciones del temporizador desde el servidor
+    socket.on('timerState', (state) => {
+        remainingTime = state.remainingTime;
+        endTime = state.endTime;
+        isPaused = state.isPaused;
+        hideHours = state.hideHours;
+        updateTimer();
+    });
+    toggleHideHours();
+    </script>
+</body>
+</html>

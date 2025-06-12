@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles_lyricss.css">
+    <title>Canciones</title>
+</head>
+<body><div class="contentx" id="cancion-contentx">
+<div class="button-container">
+    <input type="text" id="search" placeholder="Buscar canciones..." onkeyup="filtrarCanciones()">
+    <button id="toggleButton">Ocultar Visual</button>
+       <div class="checkbox-containerD" onclick="toggleCheckbox()">
+                <input type="checkbox" id="textareaCheckbox"><label for="textareaCheckbox">Editor de Cancionero</label>
+        </div>
+        <div class="checkbox-containerD" onclick="videoxCheckbox()">
+                <input type="checkbox" id="videoCheckbox"><label for="videoCheckbox">+Video</label>
+        </div>
+    </div>
+<textarea id="letra-textarea" style="display: none;"></textarea>
+<div class="containerc">
+        <input type="text" id="nombreArchivo" placeholder="Nombre del archivo" style="display: none;"/>
+        <button id="cargar">Cargar</button>
+        <button id="guardar">Guardar</button>
+        <button id="toggleButton1" onclick="toggleLetras()">Lista</button>
+    </div>
+    <div id="contenido-previo-ws" class="content"></div>
+    <div id="lista-seleccionada">
+    <h3>Lista Seleccionada</h3>
+    <div id="canciones-seleccionadas"></div>
+</div>
+    </div>
+    <div class="container">
+        <div class="content" id="letras-content">
+
+            <div id="canciones-lista"></div>
+        </div>
+        <div class="content" id="cancion-content">
+            <div id="contenido-cancion"></div>
+            <div id="bookGrid" class="grid"></div>
+            <ul id="lista-canciones"></ul>
+        </div>
+    </div>
+
+    <script src="scriptsLyrics.js"></script>
+</body>
+</html>
