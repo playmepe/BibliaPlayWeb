@@ -1,0 +1,125 @@
+   body {
+
+    display: flex;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background-color: #032f18;
+font-size: 22px;
+            font-weight: bold;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+
+}
+
+        button {
+
+            padding: 8px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+
+            background-color: #79ddb9; /* Color para el button */
+        }
+        button:hover {
+            background-color: #e0e0e0;
+        }
+
+h1 {
+            display: block;
+            width: 100%;
+            padding: 0px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+            white-space: normal;
+            background-color: #79ddb9; /* Color para el button */
+        }
+
+.content-box {
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;  /* Borde sutil alrededor del versículo */
+    border-radius: 8px;       /* Bordes redondeados */
+    background-color: #f9f9f9; /* Fondo sutil */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra para destacar */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.busqueda-item  {
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;  /* Borde sutil alrededor del versículo */
+    border-radius: 8px;       /* Bordes redondeados */
+    background-color: #f9f9f9; /* Fondo sutil */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra para destacar */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.verse-version {
+    padding: 5px;
+    border-radius: 3px;
+    font-weight: bold;
+    margin-right: 10px; /* Espacio entre la versión y el texto del versículo */
+}
+
+.verse-text {
+    display: inline-block;
+    margin-top: 5px;
+    padding: 5px;
+    border-radius: 3px;
+    background-color: #eff1f3;
+    font-size: 22px;
+            font-weight: bold;
+}
+
+.project-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.project-button:hover {
+    background-color: #0056b3;
+}
+
+#searchInput {
+    padding: 5px;
+    background-color: #aacffb;
+    border: 1px solid #456;
+
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+}
+
+#resultBusqueda {
+    background-color: #032f18; /* Fondo blanco para el contenido */
+    padding: 20px; /* Espaciado interno */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+
+    width: 100%; /* Ancho completo */
+}
+
+
+pre {
+    display: flex;
+    white-space: pre-wrap; /* Mantener los saltos de línea */
+    word-wrap: break-word; /* Permitir el ajuste de palabras largas */
+    font-size: 16px; /* Tamaño de fuente */
+}
