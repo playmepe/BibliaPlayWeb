@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="styles_busqueda.css">
+    <title>Biblia</title>
+    <style>
+
+    </style>
+</head>
+<body>
+<header>
+    <section id="video-search"><input type="text" id="bookInput" placeholder="Buscar libro..." aria-label="Buscar libro" />
+        <input type="text" id="chapterInput" placeholder="Buscar capítulo..." disabled aria-label="Buscar capítulo" />
+        <input type="text" id="verseInput" placeholder="Buscar versículo..." aria-label="Buscar versículo" />
+        <input type="range" id="font-size-slider" min="10" max="50" value="16"><span id="font-size-value">30px</span>
+ <section id="full-text-search">
+    <input type="text" id="searchInput" placeholder="resultado exacto entre ''"''" aria-label="Buscar en toda la Biblia" />
+    <button id="searchButton">Buscar</button>
+</section>
+
+    </section>
+     <div class="content-box" id="verse-content">
+    </div>
+</header>
+
+<div class="container">
+    <div class="content" id="book-content">
+        <div id="bookGrid" class="grid"></div>
+    </div>
+    <div class="content-box" id="chapter-content">
+        <div id="chapterGrid" class="grid"></div>
+        <div id="searchResults" class="verse-content"></div>
+    </div>
+    <div class="content-box" id="verse-content">
+        <h3 id="resultTitle"></h3>
+        <pre id="resultContent" class="verse-content"></pre>
+    </div>
+</div>
+<script src="script_busqueda.js"></script>
+
+</body>
+</html>

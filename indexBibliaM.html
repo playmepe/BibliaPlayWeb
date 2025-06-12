@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylesBibliaM.css">
+    <title>Biblia</title>
+    <style>
+
+
+    </style>
+</head>
+<body>
+<header id="header">
+    <div class="button-container">
+        <section id="video-search">
+            <select id="versionSelect">
+                <option value="">-- Elige una versión --</option>
+            </select>
+
+            <input type="text" id="bookInput" placeholder="Buscar libro..." aria-label="Buscar libro" />
+            <input type="text" id="chapterInput" placeholder="Capítulo..." disabled aria-label="Buscar capítulo" />
+            <input type="text" id="verseInput" placeholder="Versículo..." aria-label="Buscar versículo" />
+            <!--<input type="range" id="font-size-slider" min="20" max="80" value="16"><span id="font-size-value">50px</span>-->
+         <button id="toggleButton">Proyectar_Biblia</button>
+          <!--     <button id="showVideoButton">Mute</button>
+            <button id="hideVideoButton">Loop</button>
+            <button id="playlistButton">Playlist</button>
+    <!--        <button id="pantallaButton">PantallaPri</button>
+            <button id="pantallaTButton">PantallaTempo</button>  -->
+        <!--    <button id="mediaButton">Media</button>
+            <input type="text" id="titleInput" placeholder="Título del mensaje aquí" />
+            <input type="text" id="messageInput" placeholder="Escribe tu mensaje aquí" />
+            <button id="sendButton">Enviar</button>-->
+            <div class="checkbox-container" title="Activa el fondo animado al proyectar la Biblia">
+                <input type="checkbox" id="fondoCheckbox"><label for="fondoCheckbox">FONDO</label>
+            </div>
+        </section>
+    </div>
+</header>
+
+<div class="container">
+    <div class="left-content" id="book-content">
+    <div id="bookGrid" class="bookgrid"></div>
+      <!--  <div class="content" id="book-content">
+
+        </div>-->
+
+    </div>
+    <div class="center-content" id="chapter-content">
+        <div id="chapterGrid" class="grid"></div>
+     <!--   <div class="content" id="chapter-content">
+
+        </div>  -->
+    </div>
+    <div class="content" id="verse-content">
+        <div id="verseGrid" class="grid"></div>
+        <ul id="messages"></ul>
+        <div class="checkbox-container" title="Activar los versos incrementales, según se va seleccionando">
+           <input type="checkbox" id="incrementalCheckbox">
+           <label for="incrementalCheckbox">+VERSOS</label>
+        </div>
+        <h3 id="resultTitle"></h3>
+        <div id="resultContent" class="verse-content"></div>
+    </div>
+</div>
+
+<!--<script src="scriptsBibliaM.js" defer></script>-->
+<script src="scriptsBibliaM_o.js" defer></script>
+</body>
+</html>
