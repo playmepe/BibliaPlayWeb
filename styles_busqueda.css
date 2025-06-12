@@ -1,0 +1,304 @@
+
+  body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: #185111;
+             font-size: 20px; /* Tamaño de texto predeterminado */
+        }
+        header {
+            background-color: #333;
+            color: #345678;
+            padding: 50px 50px;
+            text-align: center;
+            position: relative;
+        }
+        .verse-content {
+          /*  white-space: pre-wrap; /* Mantiene los saltos de línea en el texto */
+            overflow-y: auto;  /* Permite el desplazamiento si hay mucho contenido */
+            height: 100%; /* Ocupa todo el espacio disponible */
+            max-height: 800px; /* Define una altura máxima para permitir el desplazamiento si es necesario */
+            font-size: 26px; /* Tamaño de texto predeterminado */
+        }
+.font-size-slider {
+          /*  white-space: pre-wrap; /* Mantiene los saltos de línea en el texto */
+            overflow-y: auto;  /* Permite el desplazamiento si hay mucho contenido */
+            height: 100%; /* Ocupa todo el espacio disponible */
+            max-height: 800px; /* Define una altura máxima para permitir el desplazamiento si es necesario */
+            font-size: 26px; /* Tamaño de texto predeterminado */
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            flex: 1;
+            /*height: 100%; /* Ocupa todo el espacio disponible */
+        }
+        .sidebar, .content, .versicles, .content-box {
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin: 5px;
+            flex: 1;
+            overflow-y: auto;
+        }
+        .sidebar {
+            flex: 1;
+            max-width: 200px;
+        }
+        .content {
+            flex: 2;
+        }
+        .versicles {
+            flex: 2;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* Dos columnas */
+            gap: 10px; /* Espacio entre columnas */
+        }
+        .content-box {
+            flex: 3;
+            position: relative; /* Para asegurar que el botón de tamaño de texto esté dentro del contenedor */
+
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+            white-space: normal;
+            background-color: #79ddb9; /* Color para el button */
+        }
+        button:hover {
+            background-color: #e0e0e0;
+        }
+        .testament-button {
+            background-color: #6ba3da; /* Color para el Antiguo Testamento */
+        }
+        .new-testament-button {
+            background-color: #df6372; /* Color para el Nuevo Testamento */
+        }
+        .verse-content {
+            white-space: pre-wrap; /* Mantiene los saltos de línea en el texto */
+            overflow-y: auto;  /* Permite el desplazamiento si hay mucho contenido */
+            height: 100%; /* Ocupa todo el espacio disponible */
+            max-height: 800px; /* Define una altura máxima para permitir el desplazamiento si es necesario */
+            font-size: 26px; /* Tamaño de texto predeterminado */
+        }
+        .checkbox-container {
+            margin-bottom: 10px;
+        }
+        .search-container {
+            margin-bottom: 10px;
+        }
+        .search-input {
+            width: 96%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .book-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Tres columnas */
+            gap: 10px; /* Espacio entre elementos */
+        }
+        .book-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+            padding: 5px;
+            border: 1px solid #dd244d;
+            border-radius: 4px;
+            background-color: #fff;
+        }
+		.booxk-itevm {
+            
+			padding: 10px;
+    background-color: #345278;
+    border: 1px solid #456;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+        }
+		
+	
+        .verse-list {
+            margin-bottom: 10px;
+            display: grid;
+            grid-template-columns: repeat(1, 1fr); /* Una columna */
+            gap: 10px; /* Espacio entre elementos */
+        }
+        .verse-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+            padding: 5px;
+            border: 1px solid #dde21d;
+            border-radius: 4px;
+        }
+        .verse-item:hover {
+            background-color: #f0f0f0;
+        }
+        .verse-checkbox {
+            margin-right: 10px; /* Espacio entre el checkbox y el texto */
+        }
+        .font-size-button {
+            background-color: #d0ffd0; /* Color para el botón de tamaño de texto */
+        }
+         .copia-size-button {
+            background-color: #d0ffd5; /* Color para el botón de tamaño de texto */
+        }
+        .book-item:hover {
+            background-color: #f0f0f0;
+        }
+        .copy-selected {
+            background-color: #d0ffd0; /* Color para el botón de tamaño de texto */
+        }
+       /*  header {
+            background-color: #333;
+            color: #345678;
+            padding: 50px 50px;
+            text-align: center;
+            position: relative;
+        }*/
+        #video-search {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #33ff9c;   /*color barra de busqueda */
+            border-bottom: 2px solid #ddd;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1000; /* Asegura que el reproductor esté encima de otros elementos */
+        }
+
+
+#filters {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+}
+
+input {
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#result {
+    margin-top: 20px;
+}
+
+#resultTitle {
+    font-size: 1.5em;
+}
+
+#resultContent {
+    white-space: pre-wrap;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+#searchResults {
+    white-space: pre-wrap;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+.suggestions {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute; /* Para que aparezca sobre otros elementos */
+    background-color: yellowgreen;
+    z-index: 1000; /* Para asegurarse de que aparezca sobre otros elementos */
+}
+
+.suggestions li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.suggestions li:hover {
+    background-color: #f0f0f0; /* Resaltar la opción al pasar el mouse */
+}
+
+        #biblie-search {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #33ff9c;   /*color barra de busqueda */
+            border-bottom: 2px solid #ddd;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1000; /* Asegura que el reproductor esté encima de otros elementos */
+        }
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+
+}
+
+.grid div {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.grid div:hover {
+    background-color: #345678;
+}
+
+.book-item, .chapter-item {
+    padding: 10px;
+    background-color: #345278;
+    border: 1px solid #456;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.book-input, .chapter-input {
+    padding: 10px;
+    background-color: #3a5678;
+    border: 1px solid #456;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.book-item:hover, .chapter-item:hover {
+    background-color: #341678;
+}
+#chapterGrid {
+    width: 100%; /* O un tamaño específico como 500px */
+}
