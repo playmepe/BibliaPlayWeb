@@ -1,0 +1,54 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #486a84;
+    margin: 0;
+    padding: 4px;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: #486a47;
+    padding: 12px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+}
+
+textarea {
+    width: 100%;
+    height: 300px;
+    margin-bottom: 4px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 4px;
+    font-size: 16px;
+}
+ #nombreArchivo {
+ margin-bottom: 4px;
+            position: center;
+            top: 0;
+            left: 0;
+            width: 96%;
+            background-color: #486a47;   /*color barra de busqueda */
+            border-bottom: 2px solid #ddd;
+            padding: 10px;
+            /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /*z-index: 1000; /* Asegura que el reproductor esté encima de otros elementos */
+        }
+button {
+    margin-bottom: 4px;
+    padding: 10px 10px;
+    background-color: #007BFF;
+    font-size: 14px; /* Tamaño de texto predeterminado */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #218838;
+}
