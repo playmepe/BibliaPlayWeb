@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VideoSrv</title>
+    <link rel="stylesheet" href="stylesMedia.css">
+    <style>
+
+    </style>
+</head>
+<body>
+    <header>
+        <section id="video-search">
+            <a>Filtrar Videos:</a>
+            <input type="text" id="search-input" placeholder="Buscar videos...">
+            <button id="playlistButton">Playlist</button>
+            <button id="pantallaButton">Pantalla</button>
+            <button id="bibliaButton">Biblia</button>
+            <button id="generateButton">Actualizar BD</button>
+        </section>
+    </header>
+    <main id="video-container">
+        <h1></h1>
+        <section id="menu"></section> <!-- Menú en la parte izquierda -->
+        <section id="video-list" class="video-grid"></section>
+    </main>
+<script>
+    const jsonUrl = '/media/NUEVOS_videos.json';
+    const videoList = document.getElementById('video-list');
+    const menuSection = document.getElementById('menu');
+    const searchInput = document.getElementById('search-input');
+
+    const playlistButton = document.getElementById('playlistButton');
+    const bibliaButton = document.getElementById('bibliaButton')
+    //const ws = new WebSocket('ws://localhost:8081');
+    //const socket = new WebSocket('ws://localhost:8080');
+    const socket = new WebSocket(`ws://${window.location.hostname}:8080`);
+    const ws = new WebSocket(`ws://${window.location.hostname}:8081`);
+
+
+    let allVideos = [];
+
+     document.getElementById('pantallaButton').addEventListener('click', function() {
+        const url = '../OBS_PantallaMixRes5aNPM.html'; // Cambia la URL
+        const width = 1920; // Ancho de la nueva ventana
+        const height = 1080; // Alto de la nueva ventana
+        const left = 1920; //(screen.width / 2) - (width / 2); // Centrar horizontalmente
+        const top = 0; //(screen.height / 2) - (height / 2); // Centrar verticalmente
+
+        window.open(url, '_blank', `width=${width},height=${height},top=${top},left=${left}`);
+        return false; // Evita el comportamiento por defecto del enlace
+    });
+
+     document.getElementById('playlistButton').addEventListener('click', function() {
+            window.open('../listaOBS_Control.html', '_blank');
+        });
+
+    document.getElementById('bibliaButton').addEventListener('click', function() {
+            window.open('../indexBiblia.html', '_blank');
+        });
+
+    //actualizar media.json
+    document.getElementById('generateButton').addEventListener('click', () => {
+            fetch('/generate-media')
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data);
+                    alert('Generación en progreso...');
+                })
+                .catch(error => console.error('Error:', error));
+        });
+/*
+   function fetchMenu() {
+   // fetch('http://localhost:4000/lista.json')
+    fetch('/datosimagen/menu.json')
+
+        .then(response => response.json())
+        .then(data => {
+            // Assuming data.menu is an array of item names
+            data.menu.forEach(item => {
+                const menuItem = document.createElement('div');
+                menuItem.classList.add('menu-item');
+
+                // Extract the item name by removing the suffixes
+                let itemName = item;
+                if (item.endsWith('_videos.json')) {
+                    itemName = item.replace('_videos.json', '');
+                } else if (item.endsWith('_images.json')) {
+                    itemName = item.replace('_images.json', '');
+                }
+
+                menuItem.textContent = itemName;
+                menuItem.addEventListener('click', () => loadVideoList(item));
+                menuSection.appendChild(menuItem);
+            });
+            menuSection.style.display = 'block'; // Show the menu after loading
+        })
+        .catch(error => console.error('Error loading menu:', error));
+}
+
+
+    function loadVideoList(filename) {
+        fetch(`/media/${filename}`)
+        //fetch(`http://localhost:4000/media/${filename}`)
+            .then(response => response.json())
+            .then(data => {
+                allVideos = data.items;
+                displayVideos(allVideos);
+                 filterVideos(); // Llama a filterVideos aquí
+            })
+            .catch(error => console.error('Error al cargar el JSON de videos:', error));
+    }
+
+    */
+///////////////////////menu///////////////////////
+//let allVideos = []; // Arreglo para almacenar todos los videos
+
+let currentPage = 0;
+const videosPerPage = 40; // Cambia este valor según cuántos videos deseas cargar por pulsos
+
+function loadVideosPage() {
+    const start = currentPage * videosPerPage;
+    const end = start + videosPerPage;
+
+    const videosToDisplay = allVideos.slice(start, end);
+    displayVideos(videosToDisplay);
+    currentPage++; // Incrementa la página para la próxima carga
+}
+function loadAllVideos() {
+    return fetch('/media/all_videos.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            allVideos = data.items; // Almacena todos los videos
+            loadVideosPage(); // Carga la primera página de videos
+        })
+        .catch(error => console.error('Error al cargar el JSON de videos:', error));
+}
+
+
+// Función para cargar la lista de videos desde un archivo específico
+function loadVideoList(filename) {
+    console.log(`Cargando lista de videos: ${filename}`);
+
+    // Vaciar el contenedor de videos antes de cargar nuevos
+    const previousCount = allVideos.length;
+
+    fetch(`/media/${filename}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.items && Array.isArray(data.items)) {
+                // Acumular videos en allVideos
+                allVideos = allVideos.concat(data.items);
+                console.log(`Total de videos acumulados: ${allVideos.length}`);
+                // Mostrar videos filtrados
+                displayVideos(allVideos);
+            } else {
+                console.warn('No se encontraron items en el JSON.');
+            }
+        })
+        .catch(error => console.error('Error al cargar el JSON de videos:', error));
+}
+
+/*
+
+function loadAllVideos() {
+    return fetch('/media/all_videos.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            allVideos = data.items; // Almacena todos los videos
+            displayVideos(allVideos); // Muestra todos los videos inicialmente
+        })
+        .catch(error => console.error('Error al cargar el JSON de videos:', error));
+}
+
+*/
+function filterVideos() {
+    const searchTerm = searchInput.value.toLowerCase();
+
+    // Solo filtrar si el término tiene 3 o más letras
+    if (searchTerm.length < 3) {
+        //displayVideos([]); // O mostrar todos los videos, según lo que prefieras
+        return;
+    }
+
+    const filteredVideos = allVideos.filter(video =>
+        (video.title && video.title.toLowerCase().includes(searchTerm)) ||
+        (video.action && video.action.toLowerCase().includes(searchTerm)) ||
+        (video.playerLabel && video.playerLabel.toLowerCase().includes(searchTerm))
+    );
+
+    displayVideos(filteredVideos);
+}
+
+
+
+
+// Función para cargar el menú y establecer eventos
+function fetchMenu() {
+    // Primero, obtener los elementos que deben ser ocultados
+    fetch('/datosimagen/menuhide.txt')
+        .then(response => response.text())
+        .then(hiddenItems => {
+            const hiddenItemsArray = hiddenItems.split('\n').map(item => item.trim());
+            return fetch('/datosimagen/menu.json').then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            }).then(data => {
+                menuSection.innerHTML = ''; // Limpiar el menú antes de cargar nuevos elementos
+                data.items.forEach(item => {
+                    // Solo añadir el ítem si no está en la lista de ocultados
+                    if (!hiddenItemsArray.includes(item.title)) {
+                        const menuItem = document.createElement('div');
+                        menuItem.classList.add('menu-item');
+                        menuItem.textContent = item.title;
+                        menuItem.addEventListener('click', () => {
+                            // Limpiar la lista actual de videos antes de cargar nuevos
+                            allVideos = []; // Vaciar allVideos para que no haya duplicados
+                            loadVideoList(item.action); // Cargar nuevos videos
+                        });
+                        menuSection.appendChild(menuItem);
+                    }
+                });
+                menuSection.style.display = 'block'; // Mostrar el menú después de cargar
+            });
+        })
+        .catch(error => console.error('Error loading menu:', error));
+}
+
+
+
+/*
+function loadVideoList(filename) {
+    // Asegúrate de que la ruta sea correcta
+     fetch(`/media/${filename}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Asegúrate de que 'items' sea la propiedad correcta
+            allVideos = data.items;
+            displayVideos(allVideos);
+            filterVideos(); // Llama a filterVideos aquí
+        })
+        .catch(error => console.error('Error al cargar el JSON de videos:', error));
+}
+*/
+/*
+ function loadVideoList(filename) {
+        fetch(`/media/${filename}`)
+        //fetch(`http://localhost:4000/media/${filename}`)
+            .then(response => response.json())
+            .then(data => {
+                allVideos = data.items;
+                displayVideos(allVideos);
+                 filterVideos(); // Llama a filterVideos aquí
+            })
+            .catch(error => console.error('Error al cargar el JSON de videos:', error));
+    }*/
+///////////////menu fin/////////////////
+
+   function displayVideos(videos) {
+    console.log(`Mostrando ${videos.length} videos`);
+    videoList.innerHTML = '';
+/*////////////mostrar todas
+    videos.forEach(item => {
+        // Validar que el ítem tenga la información necesaria
+        if (!item.action || !item.icon || !item.title) {
+            console.warn('Item incompleto:', item);
+            return; // Omitir este ítem si falta información
+        }
+   */
+         // Limitar la cantidad de videos a mostrar a un máximo de 100
+    const limitedVideos = videos.slice(0, 100); // Obtiene solo los primeros 100 videos
+
+    limitedVideos.forEach(item => {
+        // Validar que el ítem tenga la información necesaria
+        if (!item.action || !item.icon || !item.title) {
+            console.warn('Item incompleto:', item);
+            return; // Omitir este ítem si falta información
+        }
+
+
+        const videoItem = document.createElement('div');
+        videoItem.classList.add('video-item');
+
+        // Crear la estructura principal del ítem de video
+        videoItem.innerHTML = `
+            <a href="#" data-video-src="${item.action}">
+                <img src="${item.icon}" alt="${item.title}" class="video-thumbnail">
+                <div class="video-details">
+                    <h2 class="video-title">${item.title}</h2>
+                </div>
+            </a>
+            <button class="add-to-playlist" data-video-src="${item.action}" data-title="${item.title}">Añadir a Lista</button>
+        `;
+
+        // Añadir evento para el enlace
+        videoItem.querySelector('a').addEventListener('click', (e) => {
+            e.preventDefault();
+            // Aquí puedes agregar lógica opcional para abrir el video
+        });
+
+        // Añadir evento para el botón "Añadir a Lista"
+        videoItem.querySelector('.add-to-playlist').addEventListener('click', (e) => {
+            e.preventDefault();
+            const src = e.target.dataset.videoSrc;
+            const title = e.target.dataset.title;
+            addToPlaylist(src, title);
+        });
+
+        // Verificar tipos de archivo de video y agregar botón "Reproducir"
+        const videoExtensions = ['mp4', 'avi', 'webm', 'wmv', 'mkv'];
+        const extension = item.action.split('.').pop().toLowerCase();
+
+        if (videoExtensions.includes(extension)) {
+            const reproducirButton = document.createElement('button');
+            reproducirButton.classList.add('reproducir-button');
+            reproducirButton.textContent = 'Reproducir';
+            reproducirButton.dataset.videoSrc = item.action;
+
+            // Añadir evento para el botón "Reproducir"
+            reproducirButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                const src = e.target.dataset.videoSrc;
+                //const path = encodeURIComponent(src.replace(/^https?:\/\/[^/]+/, ''));
+                const path = src.replace(/^https?:\/\/[^/]+/, ''); // Eliminar protocolo y host
+                const message = `VIDEO_URL:${path}`;
+                ws.send(message);
+                console.log(`Reproducir: ${src}`);
+            });
+
+            videoItem.appendChild(reproducirButton);
+        }
+
+        // Verificar tipos de archivo de imagen y agregar botón "Proyectar"
+        const imageExtensions = ['jpeg', 'jpg', 'webp', 'png'];
+        const imageExtension = item.action.split('.').pop().toLowerCase();
+
+        if (imageExtensions.includes(imageExtension)) {
+            const projectButton = document.createElement('button');
+            projectButton.classList.add('project-button');
+            projectButton.textContent = 'Proyectar';
+            projectButton.dataset.videoSrc = item.action;
+
+            // Botón para enviar la imagen por WebSocket
+            projectButton.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                //const src = e.target.dataset.videoSrc;
+                //const actionUrl = e.currentTarget.dataset.videoSrc;
+                //const pathz = actionUrl.replace(/^https?:\/\/[^/]+/, ''); // Remove protocol and hostname
+                //const message = `cambiarimagen:/images${path}`;
+
+                const src = e.target.dataset.videoSrc;
+                //const path = encodeURIComponent(src.replace(/^https?:\/\/[^/]+/, ''));
+                const path = src.replace(/^https?:\/\/[^/]+/, ''); // Eliminar protocolo y host
+                const message = `cambiarimagen:${path}`;
+                ws.send(message);
+                console.log(`Proyectar: ${message}`);
+               // console.log(`ProyectaractionUrl: ${actionUrl}`);
+                // console.log(`ProyectarPath: ${path}`);
+                  console.log(`ProyectarPath: ${path}`);
+            });
+
+            videoItem.appendChild(projectButton);
+        }
+
+        // Botón para eliminar
+        const deleteButton = document.createElement('button');
+        deleteButton.classList.add('eliminar-button');
+        deleteButton.textContent = 'Eliminar';
+        deleteButton.dataset.videoSrc = item.action;
+
+        deleteButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            const src = e.target.dataset.videoSrc;
+
+            if (confirm(`¿Estás seguro de que quieres eliminar ${src}?`)) {
+
+                const relativePath = src.replace('/api/vplay/', ''); // Ruta relativa
+
+                console.log('Ruta relativa del video a eliminar:', relativePath);
+                fetch(`/api/videos/${relativePath}`, { // Usar la ruta relativa
+                    method: 'DELETE'
+                })
+
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error al eliminar el video');
+                    }
+                    alert('Video eliminado correctamente');
+                    // Opcional: recargar la lista de videos
+                    // location.reload();
+                })
+                .catch(err => {
+                    console.error('Error al eliminar el video:', err);
+                    alert('No se pudo eliminar el video.');
+                });
+            }
+        });
+
+        // Agregar el botón de eliminar al ítem de video
+        videoItem.appendChild(deleteButton);
+
+        // Agregar el ítem de video a la lista
+        videoList.appendChild(videoItem);
+    });
+}
+
+
+/*
+    function filterVideos() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const filteredVideos = allVideos.filter(video =>
+        (video.title && video.title.toLowerCase().includes(searchTerm)) ||
+        (video.action && video.action.toLowerCase().includes(searchTerm)) ||
+        (video.playerLabel && video.playerLabel.toLowerCase().includes(searchTerm))
+    );
+    displayVideos(filteredVideos);
+}
+*/
+/*
+    function addToPlaylist(src, title) {
+        let playlist = JSON.parse(localStorage.getItem('playlist')) || [];
+        if (!playlist.some(video => video.src === src)) {
+            playlist.push({ src, title });
+            localStorage.setItem('playlist', JSON.stringify(playlist));
+
+            socket.send(JSON.stringify({ type: 'updatePlaylist', data: playlist }));
+        }
+    }
+*/
+    function addToPlaylist(src, title) {
+    let playlist = JSON.parse(localStorage.getItem('playlist')) || [];
+
+    // Verificar si el video ya está en la lista de reproducción
+    if (!playlist.some(video => video.src === src)) {
+        playlist.push({ src, title });
+        localStorage.setItem('playlist', JSON.stringify(playlist));
+
+        // Enviar actualización por WebSocket si el socket está abierto
+        if (socket && socket.readyState === WebSocket.OPEN) {
+            socket.send(JSON.stringify({ type: 'updatePlaylist', data: playlist }));
+        } else {
+            console.warn('WebSocket no está conectado. No se pudo enviar la actualización de la lista de reproducción.');
+        }
+    } else {
+        console.log('El video ya está en la lista de reproducción.');
+    }
+}
+
+
+    // Cargar la lista de videos por defecto al cargar la página
+    window.addEventListener('load', () => {
+        loadVideoList('NUEVOS_videos.json');
+         loadAllVideos(); // Carga todos los videos
+        fetchMenu(); // Cargar el menú también
+    });
+// Llama a esta función en lugar de loadVideoList al cargar la página
+
+    searchInput.addEventListener('input', filterVideos);
+</script>
+
+</body>
+</html>

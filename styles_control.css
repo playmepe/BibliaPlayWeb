@@ -1,0 +1,202 @@
+/* Estilo para el encabezado */
+        header {
+            background-color: #333; /* Color de fondo del encabezado */
+            color: white; /* Color del texto */
+            padding: 2px 2px; /* Espaciado del encabezado */
+            position: sticky; /* Fijar en la parte superior al desplazar */
+            top: 0; /* Mantener en la parte superior */
+            z-index: 1000; /* Asegurar que esté encima de otros elementos */
+             text-align: center;
+        }
+
+
+ /* Estilos para el cuerpo */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column; /* Organizar en columnas */
+            height: 100vh; /* Altura completa de la ventana */
+            overflow: hidden;
+        }
+
+        /* Estilo para el contenedor principal */
+        main {
+            flex-grow: 1; /* Permitir que el main ocupe el espacio restante */
+            padding: 2px; /* Espaciado interno */
+            overflow-y: auto; /* Habilitar desplazamiento si es necesario */
+        }
+
+        #video-player {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: auto;
+             flex-shrink: 50; /* Evitar que se reduzca el tamaño */
+            background-color: #33ff9c;
+            border-bottom: 2px solid #ddd;
+            padding: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            max-height: 540px; /* Altura máxima que puede tener */
+            display: flex;
+            flex-direction: column;
+            overflow: auto;
+             z-index: 1000; /* Asegurar que esté encima de otros elementos */
+       /*    resize: both;
+
+            cursor: move;*/
+        }
+
+        #video-title {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .controls {
+            display: column;
+            justify-content: left;
+            margin-top: 4px;
+        }
+
+        .controls button {
+            margin: 0 5px;
+        }
+
+  /* Estilo para la lista de reproducción */
+        #playlist-container {
+            margin-top: 100px;
+            max-height: 500px; /* Limitar la altura de la lista de reproducción */
+            overflow-y: auto; /* Habilitar desplazamiento vertical */
+        }
+
+  #playlist-items {
+            list-style-type: none; /* Eliminar viñetas */
+            padding: 0; /* Eliminar espaciado */
+            margin: 0;
+            max-height: 300px; /* Limitar la altura de la lista de reproducción */
+        }
+          /* Estilo para la lista de elementos */
+        #playlist {
+            margin: 0; /* Eliminar margen */
+            max-height: 300px; /* Limitar la altura de la lista de reproducción */
+        }
+
+        .playlist-item {
+            background-color: #fff;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .playlist-item button {
+            margin-left: 4px;
+        }
+
+        .reorder-mode .playlist-item {
+            cursor: move;
+        }
+
+
+button {
+    position: relative;
+    padding: 8px 4px;
+    background-color: #ff5722;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    margin: 0 1px;
+    margin-top: 1px;
+}
+
+button:hover {
+    background-color: #e64a19;
+}
+
+main {
+    padding: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    justify-content: center;
+}
+
+.video-item {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    width: 100%;
+    max-width: 300px; /* Limitar el ancho máximo del contenedor */
+}
+
+.video-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.video-thumbnail {
+    width: 100%;
+    height: auto;
+}
+
+.video-details {
+    padding: 10px;
+}
+
+.video-title {
+    font-size: 16px;
+    margin: 0;
+    color: #333;
+}
+
+.video-label {
+    font-size: 14px;
+    color: #777;
+}
+
+.add-to-playlist {
+    background-color: #ff5722;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    font-size: 12px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px; /* Ajustar el botón al contenedor */
+}
+
+.add-to-playlist:hover {
+    background-color: #e64a19;
+}
+.checkbox-container {
+            display: flex;
+            align-items: center; /* Alinea verticalmente el contenido */
+            background-color: #2da56f; /* Color de fondo */
+            padding: 4px; /* Espaciado interno */
+            border-radius: 5px; /* Bordes redondeados */
+            margin: 0 1px;
+            border: 1px solid #ddd;
+        }
+
+        .checkbox-container label {
+            margin-right: 4px; /* Espacio entre la etiqueta y el checkbox */
+        }

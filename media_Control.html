@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Reproducción</title>
+    <link rel="stylesheet" href="styles_controlc.css">
+    <style>
+
+    </style>
+</head>
+<body>
+    <header id="header">
+        <h1>Lista de Reproducción</h1>
+        <section id="video-player">
+            <div id="video-title">Título del Video</div>
+            <video id="player" heigth=200 width=320 controls muted>
+                <source id="video-source" width="200" src="" type="video/mp4">
+                Tu navegador no soporta el elemento de video.
+            </video>
+             <div class="checkbox-containerx"><div class="controls">
+                <button id="play-button">Reproducir</button>
+                <button id="play-next">Siguiente</button>
+                <button id="pause-video">Pausar</button>
+                <button id="stop-video">Detener</button>
+                <div class="checkbox-container" onclick="toggleCheckbox()">
+                <input type="checkbox" id="stopCheckbox"><label for="stopCheckbox">MANUAL</label>
+                </div></div>
+                <input type="text" id="filter-input" placeholder="Filtrar lista de reproducción">
+
+            </div>
+        </section>
+</header>
+        <main id="playlist-container" class=Grid>
+        <section id="playlist">
+            <h1></h1>
+            <ul id="playlist-items"></ul>
+        </section>
+       </main>
+
+    <script>
+        const playlistItems = document.getElementById('playlist-items');
+        const videoPlayerDiv = document.getElementById('video-player');
+        const toggleReorderButton = document.getElementById('toggle-reorder');
+        const player = document.getElementById('player');
+         const playButton = document.getElementById('play-button');
+         const playNextButton = document.getElementById('play-next');
+         const pauseButton = document.getElementById('pause-video');
+         const stopButton = document.getElementById('stop-video');
+         const videoTitle = document.getElementById('video-title');
+         //const socket = new WebSocket('ws://localhost:8080');
+         const socket = new WebSocket(`ws://${window.location.hostname}:8080`);
+         const filterInput = document.getElementById('filter-input');
+         const stopCheckbox = document.getElementById('stopCheckbox');
+       // let socket;
+
+        let reconnectInterval = 1000; // Tiempo en milisegundos para intentar reconectar
+
+        let reproducirLista = JSON.parse(localStorage.getItem('playlist')) || [];
+       // let currentIndex = parseInt(localStorage.getItem('currentVideoIndex')) || 0;
+         let isSocketOpen = false;
+        const messageQueue = [];
+        //let reproducirLista = [];
+        let currentIndex = parseInt(localStorage.getItem('currentVideoIndex')) || 0;
+        let isLoading = false; // Nueva variable para controlar la carga
+        let isCheckboxChecked = false; // Variable para almacenar el estado del checkbox
+
+function adjustHeaderHeight() {
+            const videoPlayer = document.getElementById('video-player');
+            const header = document.getElementById('header');
+            header.style.height = `${videoPlayer.offsetHeight}px`; // Ajusta la altura del header
+        }
+function toggleCheckbox() {
+            const checkbox = document.getElementById('stopCheckbox');
+            checkbox.checked = !checkbox.checked; // Cambia el estado del checkbox
+
+            // Envía el estado actualizado
+            const isChecked = checkbox.checked; // Obtén el nuevo estado
+            console.log('Checkbox estado antes de enviar:', isChecked); // Imprimir estado antes de enviar
+
+            socket.send(JSON.stringify({ type: 'control', action: 'updateStopCheckbox', checked: isChecked }));
+        }
+
+        stopCheckbox.addEventListener('change', () => {
+            const isChecked = stopCheckbox.checked; // Obtén el estado del checkbox
+            console.log('Checkbox estado antes de enviar:', isChecked); // Imprimir estado antes de enviar
+
+            socket.send(JSON.stringify({ type: 'control', action: 'updateStopCheckbox', checked: isChecked }));
+        });
+
+        // Ajusta la altura al cargar la página
+    //    window.onload = adjustHeaderHeight;
+
+        // Ajusta la altura al redimensionar la ventana
+        window.onresize = adjustHeaderHeight;
+
+filterInput.addEventListener('input', () => {
+    const filterText = filterInput.value.toLowerCase();
+    const items = document.querySelectorAll('.playlist-item');
+
+    items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (text.includes(filterText)) {
+            item.style.display = ''; // Muestra el elemento si coincide
+        } else {
+            item.style.display = 'none'; // Oculta el elemento si no coincide
+        }
+    });
+});
+
+/*
+        function loadPlaylist() {
+    reproducirLista = JSON.parse(localStorage.getItem('playlist')) || [];
+    currentIndex = parseInt(localStorage.getItem('currentVideoIndex')) || 0;
+
+    // Asegúrate de que currentIndex esté dentro de los límites
+    if (currentIndex >= reproducirLista.length) {
+        currentIndex = 0; // O maneja el caso como prefieras
+    }
+
+    updatePlaylist();
+    if (reproducirLista.length > 0) {
+        playVideo(reproducirLista[currentIndex].src);
+    }
+}
+*/
+function loadPlaylist() {
+    // Cargar la lista desde localStorage
+    reproducirLista = JSON.parse(localStorage.getItem('playlist')) || [];
+    currentIndex = parseInt(localStorage.getItem('currentVideoIndex')) || 0;
+
+    // Verificar que currentIndex esté dentro de los límites de la lista
+    if (currentIndex >= reproducirLista.length || currentIndex < 0) {
+        currentIndex = 0; // Reiniciar si el índice es inválido
+    }
+
+    // Actualizar la interfaz con la lista
+    updatePlaylist();
+
+    // Si hay elementos en la lista, intentar reproducir el primer video
+    if (reproducirLista.length > 0) {
+        loadVideo();  // Reproducir el primer video
+    } else {
+        console.log("No hay videos en la lista.");
+    }
+
+    // Enviar la lista de reproducción al servidor WebSocket si está disponible
+    if (socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({ type: 'playlist', data: reproducirLista }));
+    } else {
+        console.error("El WebSocket no está abierto. No se puede enviar la lista.");
+    }
+}
+
+/*
+        function loadVideo() {
+            if (reproducirLista.length > 0 && reproducirLista[currentIndex]) {
+                player.src = reproducirLista[currentIndex].src;
+                videoPlayerDiv.style.display = 'block'; // Mostrar el reproductor
+                player.play().catch(error => {
+                    console.error('Error al intentar reproducir el video:', error);
+                });
+                updateVideoTitle();
+            }
+        }
+*/
+function loadVideo() {
+    // Solo cargar el video si la lista tiene elementos y el índice es válido
+    if (reproducirLista.length > 0 && reproducirLista[currentIndex]) {
+        player.src = reproducirLista[currentIndex].src;
+        videoPlayerDiv.style.display = 'block'; // Mostrar el reproductor de video
+        player.play().catch(error => {
+            console.error('Error al intentar reproducir el video:', error);
+        });
+        updateVideoTitle();
+    } else {
+        console.error("No hay video disponible para cargar.");
+    }
+}
+
+       function updatePlaylist() {
+       // Verificar que reproducirLista es un arreglo
+    if (!Array.isArray(reproducirLista)) {
+        console.error("reproducirLista no es un arreglo:", reproducirLista);
+        return;
+    }
+            playlistItems.innerHTML = '';
+            filterInput.value = ''; // Limpiar el filtro
+            reproducirLista.forEach((video, index) => {
+                const li = document.createElement('li');
+                li.classList.add('playlist-item');
+                li.dataset.index = index;
+                li.innerHTML = `
+                    ${video.title}
+                    <button class="play-button">Reproducir</button>
+                    <button class="remove-button">Eliminar</button>
+                `;
+                li.setAttribute('draggable', true);
+                li.addEventListener('dragstart', handleDragStart);
+                li.addEventListener('dragover', handleDragOver);
+                li.addEventListener('drop', handleDrop);
+                li.querySelector('.play-button').addEventListener('click', () => {
+
+                if (socket.readyState === WebSocket.OPEN) {
+    socket.send(JSON.stringify({ type: 'control', action: 'playVideo', index: index }));
+} else {
+    // Opcionalmente manejar el caso donde el socket aún no está abierto
+    console.error("WebSocket no está abierto. Estado actual:", socket.readyState);
+}
+                    //socket.send(JSON.stringify({ type: 'control', action: 'playVideo', index: index }));
+                });
+                li.querySelector('.remove-button').addEventListener('click', () => {
+                    socket.send(JSON.stringify({ type: 'control', action: 'removeVideo', index: index }));
+                });
+                playlistItems.appendChild(li);
+            });
+        }
+
+        function handleDragStart(event) {
+            event.dataTransfer.setData('text/plain', event.target.dataset.index);
+        }
+
+        function handleDragOver(event) {
+            event.preventDefault();
+        }
+
+        function handleDrop(event) {
+            event.preventDefault();
+            const draggedIndex = event.dataTransfer.getData('text/plain');
+            const targetIndex = event.target.closest('.playlist-item').dataset.index;
+
+            if (draggedIndex !== targetIndex) {
+                const draggedItem = reproducirLista[draggedIndex];
+                reproducirLista.splice(draggedIndex, 1);
+                reproducirLista.splice(targetIndex, 0, draggedItem);
+                localStorage.setItem('playlist', JSON.stringify(reproducirLista));
+                socket.send(JSON.stringify({ type: 'updatePlaylist', data: reproducirLista }));
+                updatePlaylist();
+            }
+        }
+
+     /*   toggleReorderButton.addEventListener('click', () => {
+            playlistItems.classList.toggle('reorder-mode');
+        });*/
+
+        window.addEventListener('load', loadPlaylist);
+
+function playVideo(src) {
+    player.src = src;
+    player.play().catch(error => console.error('Error al reproducir:', error));
+    updateVideoTitle();
+    if (socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({ type: 'updatePlaylist', data: reproducirLista }));
+    }
+}
+
+        function updateVideoTitle() {
+            if (reproducirLista[currentIndex]) {
+                videoTitle.textContent = reproducirLista[currentIndex].title;
+            }
+        }
+
+function playNextVideo() {
+    if (reproducirLista.length > 0) {
+        currentIndex = (currentIndex + 1) % reproducirLista.length;
+        localStorage.setItem('currentVideoIndex', currentIndex);
+
+        // Verifica si el índice actual es válido
+        if (reproducirLista[currentIndex]) {
+            playVideo(reproducirLista[currentIndex].src);
+        } else {
+            console.error("El índice actual está fuera de rango.");
+        }
+    }
+}
+
+
+
+
+        function pauseVideo() {
+            player.pause();
+        }
+
+        function stopVideo() {
+            player.pause();
+            player.currentTime = 0;
+        }
+
+        playNextButton.addEventListener('click', () => {
+            socket.send(JSON.stringify({ type: 'control', action: 'playNext' }));
+        });
+
+        pauseButton.addEventListener('click', () => {
+            socket.send(JSON.stringify({ type: 'control', action: 'pause' }));
+            console.log('recibido mensaje enviar mensaje pausa');
+        });
+
+        stopButton.addEventListener('click', () => {
+            socket.send(JSON.stringify({ type: 'control', action: 'stop' }));
+            stop(); // Llama a la función stop() para detener la reproducción
+        });
+
+        playButton.addEventListener('click', () => {
+            socket.send(JSON.stringify({ type: 'control', action: 'play' }));
+        });
+
+        player.addEventListener('ended', () => {
+           //socket.send(JSON.stringify({ type: 'control', action: 'playNext' }));
+            playNextVideo();
+            updateVideoTitle();
+        });
+
+   //     function connectWebSocket() {
+   // socket = new WebSocket('ws://localhost:8080');
+/*
+   socket.addEventListener('open', () => {
+    console.log('Conexión WebSocket abierta');
+
+    // Carga la lista de reproducción desde localStorage
+    reproducirLista = JSON.parse(localStorage.getItem('playlist')) || [];
+    currentIndex = parseInt(localStorage.getItem('currentVideoIndex')) || 0;
+
+    // Envía la lista de reproducción al servidor
+    socket.send(JSON.stringify({ type: 'playlist', data: reproducirLista }));
+});
+*/
+socket.addEventListener('open', () => {
+    console.log('Conexión WebSocket abierta');
+
+    // Envía la lista de reproducción al servidor solo si está abierta
+    if (reproducirLista.length > 0) {
+        socket.send(JSON.stringify({ type: 'playlist', data: reproducirLista }));
+    } else {
+        console.log('Lista de reproducción vacía. No se enviará al servidor.');
+    }
+});
+
+
+// Cuando añades o eliminas un video
+function updateLocalStorageAndSocket() {
+   localStorage.setItem('playlist', JSON.stringify(reproducirLista));
+   socket.send(JSON.stringify({ type: 'updatePlaylist', data: reproducirLista }));
+   console.log('recibido mensaje actualizar lista');
+}
+
+// Manejar el evento de cierre
+socket.addEventListener('close', () => {
+    console.log('Conexión WebSocket cerrada. Intentando reconectar...');
+    // Implementa la lógica de reconexión aquí si es necesario
+    //setTimeout(connectWebSocket, reconnectInterval); // Intenta reconectar después de un intervalo
+});
+
+// Llama a la función para iniciar la conexión //connectWebSocket();
+       socket.addEventListener('message', event => {
+            const msg = JSON.parse(event.data);
+            if (msg.type === 'playlist') {
+                reproducirLista = msg.data;
+                localStorage.setItem('playlist', JSON.stringify(reproducirLista));
+                updatePlaylist();
+                console.log('Lista de reproducción cargada:', reproducirLista);
+
+            } else  if (msg.type === 'control') {
+                switch (msg.action) {
+
+                         case 'play':
+                        videoPlayerDiv.style.display = 'block'; // Mostrar el reproductor
+                        player.play();
+                        console.log('recibido mensaje play');
+                        break;
+                        if (typeof msg.time === 'number' && isFinite(msg.time)) {
+                            player.currentTime = msg.time;
+                        }
+                        player.play().catch(error => console.error('Error al reproducir:', error));
+                        break;
+                    case 'pause':
+                        player.pause();
+                        console.log('recibido mensaje pausa');
+                        if (typeof msg.time === 'number' && isFinite(msg.time)) {
+                            player.currentTime = msg.time;
+                            console.log('recibido mensaje pausas');
+                        }
+                        break;
+                    case 'stop':
+                        player.pause();
+                        player.currentTime = 0;
+                        console.log('recibido mensaje stop');
+                        break;
+                case 'playNext':
+                console.log('recibido mensaje playnext');
+                stopCheckbox.addEventListener('change', () => {
+               const isChecked = stopCheckbox.checked;
+               socket.send(JSON.stringify({ type: 'control', action: 'updateStopCheckbox', checked: isChecked }));
+              });
+                if (currentIndex < reproducirLista.length) {
+       // const stopCheckbox = document.getElementById('stopCheckbox');
+
+                  if (stopCheckbox.checked) {
+                  console.log('recibido mensaje pausa por el checkbox activo');
+            player.pause(); // Llama a la función stop() si el checkbox está marcado
+            socket.send(JSON.stringify({ type: 'control', action: 'pause' }));
+            stop();
+                   } else {
+            playNextVideo(); // Llama a playNextVideo() si el checkbox no está marcado
+                   }
+               } else {
+        console.error("No hay videos en la lista para reproducir.");
+    }
+
+
+                break;
+                 case 'playNextR':
+                        if (currentIndex < reproducirLista.length) {
+                    playNextVideo();
+                } else {
+                    console.error("No hay videos en la lista para reproducir.");
+                }
+                break;
+                    case 'playVideo':
+                        currentIndex = msg.index;
+                        localStorage.setItem('currentVideoIndex', currentIndex);
+                        //playVideo(reproducirLista[currentIndex].src);
+                        loadVideo();
+                        console.log('recibido mensaje playvideo');
+                        break;
+                        case 'removeVideo':
+                        reproducirLista.splice(msg.index, 1);
+                        localStorage.setItem('playlist', JSON.stringify(reproducirLista));
+                        socket.send(JSON.stringify({ type: 'updatePlaylist', data: reproducirLista }));
+                        updatePlaylist();
+                        break;
+
+                }
+            }
+        });
+
+        const videoPlayer = document.getElementById('video-player');
+        videoPlayer.addEventListener('mousedown', function(event) {
+            let shiftX = event.clientX - videoPlayer.getBoundingClientRect().left;
+            let shiftY = event.clientY - videoPlayer.getBoundingClientRect().top;
+
+            function moveAt(pageX, pageY) {
+                videoPlayer.style.left = pageX - shiftX + 'px';
+                videoPlayer.style.top = pageY - shiftY + 'px';
+            }
+
+            moveAt(event.pageX, event.pageY);
+
+            function onMouseMove(event) {
+                moveAt(event.pageX, event.pageY);
+            }
+
+            document.addEventListener('mousemove', onMouseMove);
+
+            videoPlayer.onmouseup = function() {
+                document.removeEventListener('mousemove', onMouseMove);
+                videoPlayer.onmouseup = null;
+            };
+        });
+ // Ajusta la altura al cargar la página
+     //   window.onload = updatePlaylist();
+        window.onload = function() {
+    loadPlaylist();  // Cargar la lista desde localStorage
+    adjustHeaderHeight(); // Ajustar la altura del header
+    updatePlaylist(); // Asegurarse de que la lista se muestre correctamente en la interfaz
+};
+
+
+    </script>
+</body>
+</html>

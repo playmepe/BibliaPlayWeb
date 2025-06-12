@@ -1,0 +1,267 @@
+/* Estilo para el encabezado */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+
+            overflow: hidden;
+        }
+        header {
+            background-color: #333; /* Color de fondo del encabezado */
+            color: white; /* Color del texto */
+            padding: 2px 2px; /* Espaciado del encabezado */
+            position: sticky; /* Fijar en la parte superior al desplazar */
+            top: 0; /* Mantener en la parte superior */
+            z-index: 1000; /* Asegurar que esté encima de otros elementos */
+             text-align: center;
+             display: flex;
+             height: 300px;  /* limite altura de reproductor y playlist */
+        }
+/* Mostrar un tooltip al tocar en dispositivos móviles o al enfocarse en el elemento */
+.checkbox-container[title]:hover::after,
+.checkbox-container[title]:focus::after {
+    content: attr(title);
+    position: absolute;
+    background-color: #333;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-size: 14px;
+    z-index: 10;
+    pointer-events: none; /* No bloquear la interacción */
+}
+
+/* Asegúrate de que el tooltip no se superponga al checkbox */
+.checkbox-container {
+    position: relative;
+}
+
+        #video-player {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: auto;
+            /* flex-shrink: 50; /* Evitar que se reduzca el tamaño */
+            background-color: #33ff9c;
+            border-bottom: 2px solid #ddd;
+            padding: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          /*  max-height: 200px;  Altura máxima que puede tener */
+            display: center;
+            flex-direction: column;
+
+overflow: hidden;
+             z-index: 1000; /* Asegurar que esté encima de otros elementos */
+       /*    resize: both;
+
+            cursor: move;*/
+        }
+
+        #video-title {
+            margin-bottom: 2px;
+            font-weight: bold;
+        }
+/* Estilo para la lista de reproducción */
+        #playlist-container {
+            margin-top: 0px;
+            max-width: 500px auto; /* Ajusta el ancho máximo según sea necesario */
+            margin: 30px auto;
+            max-height: 520px; /* Limitar la 8altura de la lista de reproducción */
+            overflow-y: auto; /* Habilitar desplazamiento vertical */
+            margin: 0; /* Eliminar margen */
+            background-color: #33ff9c;
+            padding: 2px;
+            border: 1px solid #ccc;
+        }
+
+  #playlist-items {
+            list-style-type: none; /* Eliminar viñetas */
+            padding: 0; /* Eliminar espaciado */
+            margin: 0;
+
+        }
+          /* Estilo para la lista de elementos */
+        #playlist {
+            margin: 0; /* Eliminar margen */
+            padding: 2px;
+        }
+
+div {
+    background-color: #33ad9c;
+  /*  display: column;
+    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+    gap: 20px;
+    justify-content: top;*/
+}
+.playlist-item:hover {
+    background-color: #f4fad6;
+}
+#filter-input {
+    position: relative;
+    padding: 8px 4px;
+    background-color: #fff;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    margin: 0 1px;
+    margin-top: 1px;
+}
+.Grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+    gap: 20px;
+    justify-content: center;
+}
+
+  .playlist-itemB {
+      display: flex;
+       text-align: right;
+       margin-left: auto;
+       justify-content: flex-end;
+            background-color: #ff5722;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        }
+ .playlist-item {
+            background-color: #fff;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .playlist-item button {
+            margin-left: 4px;
+        }
+        .reorder-mode .playlist-item {
+            cursor: move;
+        }
+button {
+    position: relative;
+    padding: 8px 4px;
+    background-color: #ff5722;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    margin: 0 1px;
+    margin-top: 1px;
+}
+
+button:hover {
+    background-color: #e64a19;
+}
+.controls {
+            display: flex;
+            align-items: center; /* Alinea verticalmente los elementos */
+            gap: 10px; /* Espacio entre botones y checkbox */
+        }
+/*
+        .checkbox-container {
+            font-size: 14px;
+            display: flex;
+            align-items: center; /* Alinea verticalmente la etiqueta y el checkbox */
+  /*          background-color: #ff5722; /* Color de fondo */
+   /*         padding: 8px; /* Espaciado interno */
+  /*          border-radius: 5px; /* Bordes redondeados */
+   /*     }
+*/
+.checkbox-container {
+    display: inline-block;
+    cursor: pointer;
+}
+
+#stopCheckbox {
+    display: none; /* Ocultamos el checkbox real */
+}
+
+label {
+    cursor: pointer;
+    padding-left: 0px;
+}
+
+.checkbox-container input:checked + label::before {
+    content: '☑️'; /* o el estilo de tu checkbox marcado */
+}
+
+.checkbox-container input:not(:checked) + label::before {
+    content: '☐'; /* o el estilo de tu checkbox no marcado */
+}
+
+   #fondoCheckbox {
+
+            width: 50px;
+            background-color: #33ff9c;   /*color barra de busqueda */
+            border-bottom: 2px solid #ddd;
+            padding: 1px;
+
+        }
+
+         .checkbox-container {
+             display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px;
+            background-color: #ff5722; /* Color del botón */
+            color: white;
+            border-radius: 5px;
+            border: none;
+            font-size: 14px;
+            user-select: none; /* Evitar selección de texto */
+            width: 80px;
+            align-items: baseline;
+        }
+
+input[type="checkbox"] {
+
+             flex-direction: column;
+        }
+        .checkbox-button input[type="checkbox"]:checked + label {
+            text-decoration: underline; /* O algún efecto visual cuando está checked */
+             width: 80px;
+             background-color: #a2270d;
+             padding: 3px;
+             border-radius: 5px;
+             color: white;
+        }
+        .checkbox-container label {
+            margin-left: 5px; /* Espacio entre el checkbox y la etiqueta */
+        }
+
+
+.checkbox-containerx {
+    display: center;
+
+            padding: 8px 8px;
+            align-items: center; /* Alinea verticalmente el contenido */
+            background-color: #2da56f; /* Color de fondo */
+            padding: 4px; /* Espaciado interno */
+            border-radius: 5px; /* Bordes redondeados */
+            margin: 0 1px;
+            border: 1px solid #ddd;
+            max-width: 98%;
+        }
+
+
+input {
+
+	padding: 10px 5px;
+	width: 150px;
+
+            padding: 8px;
+            margin-bottom: 4px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 0 1px;
+    margin-top: 1px;
+}
