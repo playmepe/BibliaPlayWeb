@@ -11,7 +11,7 @@ Características:
 - Búsqueda y Filtro de Archivos multimedia
 - Descarga de videos youtube, facebook, etc. motor de descarga YT-DLP
 - Todo en uno para la proyección de videos, Imágenes, Biblia, letra de canciones, Conteo regresivo.
-- Aplicación hecho en html, javascript, nodejs.
+- Aplicación hecho en html, javascript, nodejs, electron.
 https://github.com/playmepe/BibliaPlayWeb/blob/main/aplicaciones.png
 ![2023-12-07_16-44](https://github.com/playmepe/BibliaPlayWeb/blob/main/aplicaciones.png)
 ![2023-12-07_19-24](https://github.com/playmepe/BibliaPlayWeb/blob/main/screen.jpg)
