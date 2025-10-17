@@ -24,7 +24,7 @@
             const newTitleInput = document.getElementById('new-title');
             const customUrlInput = document.getElementById('custom-url');
             const customTitleInput = document.getElementById('custom-title');
-       const wsWss = new WebSocket(`ws://${window.location.hostname}:8082`);
+       const wsWss = new WebSocket(`wss://${window.location.hostname}:8082`);
             let iframeCount = 0;
             let zIndex = 10;
             let activeWindow = null;
