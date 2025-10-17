@@ -7,7 +7,6 @@
     <title>Biblia</title>
     <style>
 
-
     </style>
 </head>
 <body>
@@ -19,10 +18,13 @@
             </select>
 
             <input type="text" id="bookInput" placeholder="Buscar libro..." aria-label="Buscar libro" />
-            <input type="text" id="chapterInput" placeholder="Capítulo..." disabled aria-label="Buscar capítulo" />
-            <input type="text" id="verseInput" placeholder="Versículo..." aria-label="Buscar versículo" />
-            <!--<input type="range" id="font-size-slider" min="20" max="80" value="16"><span id="font-size-value">50px</span>-->
-         <button id="toggleButton">Proyectar_Biblia</button>
+           <!-- <input type="number" id="chapterInput" placeholder="Capítulo..." disabled aria-label="Buscar capítulo" />-->
+<input type="text" id="chapterInput" placeholder="Capítulo..." aria-label="Buscar capítulo" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+      <!-- <input type="text" id="verseInput" placeholder="Versículo..." aria-label="Buscar versículo" oninput="this.value = this.value.replace(/[^0-9-]/g, '');" />-->
+<input type="text" id="verseInput" placeholder="Versículo..." aria-label="Buscar versículo" oninput="validateInput(this);" />
+   <!--     <div class="chapter-input-error">Por favor ingresa un número de capítulo válido</div>-->
+        <!-- <button id="toggleButton" style="background-color: red;">Proyectar_Biblia</button-->
+         <button id="toggleButton">MostrarBiblia</button>
           <!--     <button id="showVideoButton">Mute</button>
             <button id="hideVideoButton">Loop</button>
             <button id="playlistButton">Playlist</button>
@@ -35,6 +37,29 @@
             <div class="checkbox-container" title="Activa el fondo animado al proyectar la Biblia">
                 <input type="checkbox" id="fondoCheckbox"><label for="fondoCheckbox">FONDO</label>
             </div>
+            <div class="checkbox-container" title="Activar los versos incrementales, según se va seleccionando">
+           <input type="checkbox" id="incrementalCheckbox">
+           <label for="incrementalCheckbox">+VERSOS</label></div>
+<select id="themeSelector">
+     <option value="1">Tema Claro</option>
+    <option value="2">Tema Verde</option>
+    <option value="3">Tema Azul</option>
+    <option value="4">Tema Rojo</option>
+    <option value="5">Tema Verde</option>
+    <option value="6">Tema Amarillo</option>
+    <option value="7">Tema Transparente</option>
+    <option value="8">Tema Dinámico</option>
+    <option value="9">Tema Blanco</option>
+    <option value="10">Tema Negro</option>
+    <option value="11">Tema title</option>
+     <option value="12">Tema titleA</option>
+</select>
+<select id="positionSelector">
+    <option value="bottom">Posición: Abajo</option>
+    <option value="center">Posición: Centro</option>
+    <option value="top">Posición: Arriba</option>
+    <option value="centerm">Posición: Centrado</option>
+</select>
         </section>
     </div>
 </header>
@@ -55,17 +80,37 @@
     </div>
     <div class="content" id="verse-content">
         <div id="verseGrid" class="grid"></div>
+        <h3 id="resultTitle" class="title-container">LIBRO A PROYECTAR...</h3>
         <ul id="messages"></ul>
-        <div class="checkbox-container" title="Activar los versos incrementales, según se va seleccionando">
-           <input type="checkbox" id="incrementalCheckbox">
-           <label for="incrementalCheckbox">+VERSOS</label>
-        </div>
-        <h3 id="resultTitle"></h3>
+
+       <!-- <h3 id="resultTitle"></h3>-->
         <div id="resultContent" class="verse-content"></div>
     </div>
 </div>
 
 <!--<script src="scriptsBibliaM.js" defer></script>-->
-<script src="scriptsBibliaM_o1.js" defer></script>
+<script src="scriptsBibliaM.js" defer></script>
+<script>
+       function validateInput(input) {
+            // Reemplaza caracteres no permitidos
+            let value = input.value.replace(/[^0-9-]/g, '');
+
+            // Asegúrate de que el guion no esté al inicio
+            if (value.startsWith('-')) {
+                value = value.substring(1);
+            }
+
+            // Asegúrate de que solo haya un guion y que esté entre números
+            const parts = value.split('-');
+            if (parts.length > 2) {
+                value = parts[0] + '-' + parts[1];
+            }
+
+            input.value = value;
+        }
+        document.getElementById('header').addEventListener('dblclick', function() {
+            location.reload(); // Recargar la página
+        });
+    </script>
 </body>
 </html>
