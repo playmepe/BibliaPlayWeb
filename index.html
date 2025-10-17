@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles_inicio.css">
+    <title>BibliaPlay - Escritorio Virtual</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+    </style>
+</head>
+<body>
+    <div class="desktop" id="desktop">
+        <!-- Los iframes se crearán aquí dinámicamente -->
+    </div>
+
+    <div class="taskbar">
+        <button class="taskbar-btn" id="menu-btn">
+            <i class="fas fa-bars"></i> Menú
+        </button>
+        <div class="logo">
+            <i class="fas fa-desktop"></i>
+            <span>BibliaPlay</span>
+        </div>
+
+        <div class="quick-access">
+            <div class="minimized-windows" id="minimized-windows">
+                <!-- Botones para ventanas minimizadas aparecerán aquí -->
+            </div>
+
+            <div class="config-buttons">
+                <button class="taskbar-btn" id="save-btn">
+                    <i class="fas fa-save"></i> Guardar
+                </button>
+                <button class="taskbar-btn" id="export-btn">
+                    <i class="fas fa-download"></i> Exportar
+                </button>
+                <button class="taskbar-btn" id="import-btn">
+                    <i class="fas fa-upload"></i> Importar
+                </button>
+            </div>
+
+            <button class="taskbar-btn" id="add-btn">
+                <i class="fas fa-plus"></i> Nueva Ventana
+            </button>
+            <button class="taskbar-btn" id="reset-btn">
+                <i class="fas fa-trash"></i> Limpiar
+            </button>
+            <button class="taskbar-btn" id="proyectar-btn">
+                <i class="fas fa-trash"></i> proyectar
+            </button>
+            <div class="iframe-counter" id="window-count">0</div>
+        </div>
+    </div>
+
+    <div class="menu-panel" id="menu-panel">
+        <h3>
+            Sitios Predefinidos
+            <button class="add-url-btn" id="add-url-btn">
+                <i class="fas fa-plus"></i> Añadir URL
+            </button>
+        </h3>
+        <div id="menu-items-container">
+            <div class="menu-item" data-url="../menu.html">
+                <i class="fas fa-play-circle"></i>
+                <span>Accesos Aplicaciones</span>
+                <button class="delete-url-btn">&times;</button>
+            </div>
+            <div class="menu-item" data-url="../indexC.html">
+                <i class="fas fa-play-circle"></i>
+                <span>Proyector Pantallas</span>
+                <button class="delete-url-btn">&times;</button>
+            </div>
+             <div class="menu-item" data-url="../indexBibliaM.html">
+                <i class="fas fa-mobile-alt"></i>
+                <span>Biblia Movil</span>
+                <button class="delete-url-btn">&times;</button>
+            </div>
+            <div class="menu-item" data-url="../indexMedia.html">
+                <i class="fas fa-photo-video"></i>
+                <span>Multimedia</span>
+                <button class="delete-url-btn">&times;</button>
+            </div>
+            <div class="menu-item" data-url="../yt/index.html">
+                <i class="fab fa-youtube"></i>
+                <span>YouTube</span>
+                <button class="delete-url-btn">&times;</button>
+            </div>
+             <div class="menu-item" data-url="../tempoptlla.html">
+                <i class="fas fa-clock"></i>
+                <span>Pantalla Temporizador</span>
+                <button class="delete-url-btn">&times;</button>
+            </div>
+            <div class="menu-item" data-url="../tempoctl.html">
+                <i class="fas fa-stopwatch"></i>
+                <span>Control Temporizador</span>
+                <button class="delete-url-btn">&times;</button>
+            </div>
+            <div class="menu-item" data-url="../listaOBS_Control.html">
+                <i class="fas fa-play-circle"></i>
+                <span>Player con vista previa</span>
+                <button class="delete-url-btn">&times;</button>
+            </div>
+
+            <div class="menu-item" data-url="../control_lista.html">
+                <i class="fas fa-list"></i>
+                <span>Player Lista</span>
+                <button class="delete-url-btn">&times;</button>
+            </div>
+            <div class="menu-item" data-url="../indexLyrics5.html">
+                <i class="fas fa-photo-video"></i>
+                <span>Lyrics OBS2</span>
+                <button class="delete-url-btn">&times;</button>
+            </div>
+            <div class="menu-item" data-url="../busqueda.html">
+                <i class="fas fa-search"></i>
+                <span>Busqueda en la Biblia</span>
+                <button class="delete-url-btn">&times;</button>
+            </div>
+            <div class="menu-item" data-url="../obs/#ws://localhost:4455#m9otOAqpcRufSxyrSyv8">
+                <i class="fas fa-sliders-h"></i>
+                <span>OBS Control</span>
+                <button class="delete-url-btn">&times;</button>
+            </div>
+            <div class="menu-item" data-url="../pantalla_secundaria.html">
+                <i class="fas fa-desktop"></i>
+                <span>Pantalla Secundaria</span>
+                <button class="delete-url-btn">&times;</button>
+            </div>
+            <div class="menu-item" data-url="../indexLyrics.html">
+                <i class="fas fa-music"></i>
+                <span>Cancionero</span>
+                <button class="delete-url-btn">&times;</button>
+            </div>
+            <div class="menu-item" data-url="../monitor.html">
+                <i class="fas fa-tv"></i>
+                <span>Monitor Player</span>
+                <button class="delete-url-btn">&times;</button>
+            </div>
+            <div class="menu-item" data-url="../panelOBS_full1.html">
+                <i class="fas fa-book-bible"></i>
+                <span>Panel Full Biblia</span>
+                <button class="delete-url-btn">&times;</button>
+            </div>
+            <div class="menu-item" data-url="../pagina2.html">
+                <i class="fas fa-clock"></i>
+                <span>Pantalla Temporizador</span>
+                <button class="delete-url-btn">&times;</button>
+            </div>
+            <div class="menu-item" data-url="../tempo_main1.html">
+                <i class="fas fa-stopwatch"></i>
+                <span>Control Temporizador</span>
+                <button class="delete-url-btn">&times;</button>
+            </div>
+
+            <div class="menu-item" data-url="../editor-json/editorjson.html">
+                <i class="fas fa-edit"></i>
+                <span>Editor Canciones</span>
+                <button class="delete-url-btn">&times;</button>
+            </div>
+            <div class="menu-item" data-url="../mensaje.html">
+                <i class="fas fa-history"></i>
+                <span>Historial Prédicas</span>
+                <button class="delete-url-btn">&times;</button>
+            </div>
+            <div class="menu-item" data-url="../indexBiblia.html">
+                <i class="fas fa-bible"></i>
+                <span>Biblia Principal</span>
+                <button class="delete-url-btn">&times;</button>
+            </div>
+
+            <div class="menu-item" data-url="../biblia_ctl.html">
+                <i class="fas fa-mobile-alt"></i>
+                <span>Biblia 2</span>
+                <button class="delete-url-btn">&times;</button>
+            </div>
+            <div class="menu-item" data-url="../indexLyrics_OBS.html">
+                <i class="fas fa-photo-video"></i>
+                <span>Lyrics OBS</span>
+                <button class="delete-url-btn">&times;</button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal" id="url-modal">
+        <div class="modal-content">
+            <h3>Añadir nueva URL</h3>
+            <input type="text" id="new-url" class="modal-input" placeholder="URL (ej: http://ejemplo.com)">
+            <input type="text" id="new-title" class="modal-input" placeholder="Título para el menú">
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" id="cancel-url">Cancelar</button>
+                <button class="modal-btn confirm" id="confirm-url">Añadir</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="custom-url-modal">
+        <div class="modal-content">
+            <h3>Abrir URL personalizada</h3>
+            <input type="text" id="custom-url" class="modal-input" placeholder="URL (ej: http://ejemplo.com)">
+            <input type="text" id="custom-title" class="modal-input" placeholder="Título para la ventana">
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" id="cancel-custom">Cancelar</button>
+                <button class="modal-btn confirm" id="confirm-custom">Abrir</button>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="import-file" accept=".json" style="display: none;">
+
+    <script src="scripts_inicio.js" defer>
+    </script>
+</body>
+</html>
