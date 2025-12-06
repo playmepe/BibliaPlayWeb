@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="control_lista.css">
+    <title>Control de Reproducción</title>
+    <style>
+
+    </style>
+</head>
+<body>
+    <header id="header">
+    <div class="status-bar">
+    <!--<h1>Control de Reproducción</h1>-->
+        <div  class="now-playing"  id="video-title">No se está reproduciendo nada</div>
+            <div class="now-playing" id="nowPlaying"></div>
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <div class="video-time" id="videoTime">00:00 / 00:00</div>
+        </div>
+
+
+        <div class="controls">
+            <button class="play-btn" id="playBtn">
+                <span>▶</span> PLAY
+            </button>
+            <button class="pause-btn" id="pauseBtn">
+                <span>⏸</span> PAUSE
+            </button>
+            <button class="stop-btn" id="stopBtn">
+                <span>⏹</span> STOP
+            </button>
+            <button class="next-btn" id="nextBtn">
+                <span>⏭</span> NEXT
+            </button>
+           <button class="loop-btn" id="loopBtn">
+                <span>🔁</span> LOOP
+            </button>
+ <div class="checkbox-container" onclick="toggleCheckbox()">
+                <input type="checkbox" id="stopCheckbox"><label for="stopCheckbox">MANUAL</label>
+                </div>
+     <button class="add-btn" id="save-playlist"><span>💾</span>SAVE</button>
+     <button class="add-btn" id="load-playlist"><span>📤</span>LOAD</button>
+
+    <button class="add-btn" id="clearPlaylistBtn">🗑️ CLEAR</button>
+    <button id="toggleButton" style="display: none;">MostrarBiblia</button>
+    <div id="mode-selector">
+  <button id="toggle-mode" data-mode="multimedia" class="active">Multimedia</button>
+</div>
+    <div class="checkbox-containerxxx">
+<input type="text" id="filter-input" placeholder="Filtrar lista de reproducción">
+                    <input type="file" id="playlist-file" accept=".json" style="display: none;">
+                    </div>
+</div>
+        </header>
+<div class="container">
+            <ul class="playlist" id="playlist">
+                <!-- Playlist items will be added here dynamically -->
+            </ul>
+
+
+        </div>
+
+    <script src="scripts_ctl_lista.js" defer>
+    </script>
+</body>
+</html>

@@ -3,10 +3,251 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Alfa+Slab+One&family=Anton&family=Bebas+Neue&family=Bungee&family=Changa+One&family=Lobster&family=Oswald:wght@400;700&family=Playfair+Display:wght@400;700&family=Righteous&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="stylesBibliaM.css">
     <title>Biblia</title>
     <style>
+    /* Estilos para el modal de configuración */
+        .config-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
 
+        .config-modal-content {
+            background-color: #5a7d55;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .config-close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .config-close:hover {
+            color: black;
+        }
+
+        .config-section {
+            margin: 15px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .config-section h3 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .config-group {
+            margin: 3px 0;
+        }
+
+        .config-group label {
+            display: inline-block;
+            width: 120px;
+            font-weight: bold;
+        }
+
+        .config-group input, .config-group select {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .color-preview {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #000;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        .config-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .config-buttons button {
+            padding: 8px 15px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #saveConfig {
+            background-color: #28a745;
+            color: white;
+        }
+
+        #applyConfig {
+            background-color: #007bff;
+            color: white;
+        }
+
+        #resetConfig {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        /* Botón para abrir configuración en el header */
+        #configButton {
+            padding: 10px 10px;
+            background-color: #095b43;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+ @media (max-width: 480px) {
+
+
+            #hideVideoButton {
+            display: none;
+
+            }
+
+
+        }
+        /* Estilos para el select con fuentes personalizadas */
+#titleFontFamily option[value*="Google"] {
+    font-family: Arial, sans-serif;
+    font-style: italic;
+    color: #666;
+}
+
+#titleFontFamily optgroup {
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Preview de fuentes en el select (solo funciona en algunos navegadores) */
+#titleFontFamily option[value*="Bebas"] { font-family: 'Bebas Neue', sans-serif; }
+#titleFontFamily option[value*="Anton"] { font-family: 'Anton', sans-serif; }
+#titleFontFamily option[value*="Oswald"] { font-family: 'Oswald', sans-serif; }
+#titleFontFamily option[value*="Bungee"] { font-family: 'Bungee', sans-serif; }
+#titleFontFamily option[value*="Righteous"] { font-family: 'Righteous', cursive; }
+#titleFontFamily option[value*="Abril"] { font-family: 'Abril Fatface', serif; }
+#titleFontFamily option[value*="Playfair"] { font-family: 'Playfair Display', serif; }
+#titleFontFamily option[value*="Lobster"] { font-family: 'Lobster', cursive; }
+#titleFontFamily option[value*="Changa"] { font-family: 'Changa One', sans-serif; }
+#titleFontFamily option[value*="Alfa"] { font-family: 'Alfa Slab One', serif; }
+
+
+/* Preview de fuentes en el select (solo funciona en algunos navegadores) */
+#contentFontFamily option[value*="Bebas"] { font-family: 'Bebas Neue', sans-serif; }
+#contentFontFamily option[value*="Anton"] { font-family: 'Anton', sans-serif; }
+#contentFontFamily option[value*="Oswald"] { font-family: 'Oswald', sans-serif; }
+#contentFontFamily option[value*="Bungee"] { font-family: 'Bungee', sans-serif; }
+#contentFontFamily option[value*="Righteous"] { font-family: 'Righteous', cursive; }
+#contentFontFamily option[value*="Abril"] { font-family: 'Abril Fatface', serif; }
+#contentFontFamily option[value*="Playfair"] { font-family: 'Playfair Display', serif; }
+#contentFontFamily option[value*="Lobster"] { font-family: 'Lobster', cursive; }
+#contentFontFamily option[value*="Changa"] { font-family: 'Changa One', sans-serif; }
+#contentFontFamily option[value*="Alfa"] { font-family: 'Alfa Slab One', serif; }
+
+/* Estilos para el historial */
+.history-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.history-controls button {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    background: #974b4b;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.history-controls button:hover {
+    background: #f5f5f5;
+}
+
+#historySearch {
+    flex: 1;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.history-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.history-entry {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background: #f9f9f9;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.history-time {
+    font-size: 0.8em;
+    color: #666;
+}
+
+.history-content {
+    color: #555;
+    margin-bottom: 10px;
+    font-style: italic;
+}
+
+.history-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.history-actions button {
+    padding: 3px 8px;
+    font-size: 0.8em;
+    border: 1px solid #ccc;
+    background: #25452b;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.history-actions button:hover {
+    background: #e9e9e9;
+}
+
+#searchResults {
+
+
+font-size: 23px;
+}
     </style>
 </head>
 <body>
@@ -19,15 +260,17 @@
 
             <input type="text" id="bookInput" placeholder="Buscar libro..." aria-label="Buscar libro" />
            <!-- <input type="number" id="chapterInput" placeholder="Capítulo..." disabled aria-label="Buscar capítulo" />-->
-<input type="text" id="chapterInput" placeholder="Capítulo..." aria-label="Buscar capítulo" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+            <input type="text" id="chapterInput" placeholder="Capítulo..." aria-label="Buscar capítulo" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
       <!-- <input type="text" id="verseInput" placeholder="Versículo..." aria-label="Buscar versículo" oninput="this.value = this.value.replace(/[^0-9-]/g, '');" />-->
-<input type="text" id="verseInput" placeholder="Versículo..." aria-label="Buscar versículo" oninput="validateInput(this);" />
+            <input type="text" id="verseInput" placeholder="Versículo..." aria-label="Buscar versículo" oninput="validateInput(this);" />
    <!--     <div class="chapter-input-error">Por favor ingresa un número de capítulo válido</div>-->
         <!-- <button id="toggleButton" style="background-color: red;">Proyectar_Biblia</button-->
          <button id="toggleButton">MostrarBiblia</button>
-          <!--     <button id="showVideoButton">Mute</button>
-            <button id="hideVideoButton">Loop</button>
-            <button id="playlistButton">Playlist</button>
+         <button id="hideVideoButton">Loop</button>
+<!--         <button id="showVideoButton">ImagenA</button>
+<input type="text" id="searchInput" placeholder="Buscar en la biblia..." aria-label="Buscar libro" />
+<button id="searchButton">Buscar</button>
+           <button id="playlistButton">Playlist</button>
     <!--        <button id="pantallaButton">PantallaPri</button>
             <button id="pantallaTButton">PantallaTempo</button>  -->
         <!--    <button id="mediaButton">Media</button>
@@ -53,6 +296,7 @@
     <option value="10">Tema Negro</option>
     <option value="11">Tema title</option>
      <option value="12">Tema titleA</option>
+      <option value="13">Tema titleB</option>
 </select>
 <select id="positionSelector">
     <option value="bottom">Posición: Abajo</option>
@@ -60,9 +304,185 @@
     <option value="top">Posición: Arriba</option>
     <option value="centerm">Posición: Centrado</option>
 </select>
+<!-- Botón para abrir configuración -->
+            <button id="configButton">⚙️ Configuración</button>
         </section>
+
     </div>
 </header>
+
+<!-- Modal de Configuración -->
+<div id="configModal" class="config-modal">
+    <div class="config-modal-content">
+        <span class="config-close">&times;</span>
+        <h2>Configuración de Estilos</h2>
+
+        <!-- Configuración para el Título -->
+        <div class="config-section">
+            <h3>Estilo del Título</h3>
+
+            <div class="config-group">
+                <label for="titleFontFamily">Fuente:</label>
+                <select id="titleFontFamily">
+    <!-- Fuentes del sistema -->
+    <optgroup label="Fuentes del Sistema">
+        <option value="Arial">Arial</option>
+        <option value="Helvetica">Helvetica</option>
+        <option value="Times New Roman">Times New Roman</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Verdana">Verdana</option>
+        <option value="Impact">Impact</option>
+        <option value="Comic Sans MS">Comic Sans MS</option>
+    </optgroup>
+
+    <!-- Google Fonts - Display -->
+    <optgroup label="Google Fonts - Display">
+        <option value="'Bebas Neue', sans-serif">Bebas Neue</option>
+        <option value="'Anton', sans-serif">Anton</option>
+        <option value="'Oswald', sans-serif">Oswald</option>
+        <option value="'Bungee', sans-serif">Bungee</option>
+        <option value="'Righteous', cursive">Righteous</option>
+    </optgroup>
+
+    <!-- Google Fonts - Serif & Script -->
+    <optgroup label="Google Fonts - Serif & Script">
+        <option value="'Abril Fatface', serif">Abril Fatface</option>
+        <option value="'Playfair Display', serif">Playfair Display</option>
+        <option value="'Lobster', cursive">Lobster</option>
+        <option value="'Changa One', sans-serif">Changa One</option>
+        <option value="'Alfa Slab One', serif">Alfa Slab One</option>
+    </optgroup>
+</select>
+            </div>
+
+            <div class="config-group">
+                <label for="titleFontSize">Tamaño:</label>
+                <input type="number" id="titleFontSize" min="10" max="100" value="65"> px
+            </div>
+
+            <div class="config-group">
+                <label for="titleColor">Color:</label>
+                <input type="color" id="titleColor" value="#ffffff">
+                <span class="color-preview" id="titleColorPreview"></span>
+            </div>
+
+            <div class="config-group">
+                <label for="titleBackground">Fondo:</label>
+                <input type="color" id="titleBackground" value="#333333">
+                <span class="color-preview" id="titleBackgroundPreview"></span>
+            </div>
+
+            <div class="config-group">
+                <label for="titleShadow">Sombra:</label>
+                <input type="checkbox" id="titleShadow" checked>
+            </div>
+
+            <div class="config-group">
+                <label for="titleShadowColor">Color Sombra:</label>
+                <input type="color" id="titleShadowColor" value="#000000">
+                <span class="color-preview" id="titleShadowColorPreview"></span>
+            </div>
+
+            <div class="config-group">
+                <label for="titleBold">Negrita:</label>
+                <input type="checkbox" id="titleBold" checked>
+            </div>
+
+            <div class="config-group">
+                <label for="titleItalic">Cursiva:</label>
+                <input type="checkbox" id="titleItalic">
+            </div>
+        </div>
+
+        <!-- Configuración para el Contenido -->
+        <div class="config-section">
+            <h3>Estilo del Contenido</h3>
+
+            <div class="config-group">
+                <label for="contentFontFamily">Fuente:</label>
+                <select id="contentFontFamily">
+                    <!-- Fuentes del sistema -->
+    <optgroup label="Fuentes del Sistema">
+        <option value="Arial">Arial</option>
+        <option value="Helvetica">Helvetica</option>
+        <option value="Times New Roman">Times New Roman</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Verdana">Verdana</option>
+        <option value="Impact">Impact</option>
+        <option value="Comic Sans MS">Comic Sans MS</option>
+    </optgroup>
+
+    <!-- Google Fonts - Display -->
+    <optgroup label="Google Fonts - Display">
+        <option value="'Bebas Neue', sans-serif">Bebas Neue</option>
+        <option value="'Anton', sans-serif">Anton</option>
+        <option value="'Oswald', sans-serif">Oswald</option>
+        <option value="'Bungee', sans-serif">Bungee</option>
+        <option value="'Righteous', cursive">Righteous</option>
+    </optgroup>
+
+    <!-- Google Fonts - Serif & Script -->
+    <optgroup label="Google Fonts - Serif & Script">
+        <option value="'Abril Fatface', serif">Abril Fatface</option>
+        <option value="'Playfair Display', serif">Playfair Display</option>
+        <option value="'Lobster', cursive">Lobster</option>
+        <option value="'Changa One', sans-serif">Changa One</option>
+        <option value="'Alfa Slab One', serif">Alfa Slab One</option>
+    </optgroup>
+                </select>
+            </div>
+
+            <div class="config-group">
+                <label for="contentFontSize">Tamaño:</label>
+                <input type="number" id="contentFontSize" min="10" max="82" value="60"> px
+            </div>
+
+            <div class="config-group">
+                <label for="contentColor">Color:</label>
+                <input type="color" id="contentColor" value="#ffffff">
+                <span class="color-preview" id="contentColorPreview"></span>
+            </div>
+
+            <div class="config-group">
+                <label for="contentLineHeight">Interlineado:</label>
+                <input type="number" id="contentLineHeight" min="1" max="3" step="0.1" value="1.4">
+            </div>
+
+            <div class="config-group">
+                <label for="contentShadow">Sombra:</label>
+                <input type="checkbox" id="contentShadow" checked>
+            </div>
+
+            <div class="config-group">
+                <label for="contentShadowColor">Color Sombra:</label>
+                <input type="color" id="contentShadowColor" value="#000000">
+                <span class="color-preview" id="contentShadowColorPreview"></span>
+            </div>
+
+            <div class="config-group">
+                <label for="contentBold">Negrita:</label>
+                <input type="checkbox" id="contentBold">
+            </div>
+
+            <div class="config-group">
+                <label for="contentItalic">Cursiva:</label>
+                <input type="checkbox" id="contentItalic">
+            </div>
+
+            <div class="config-group">
+                <label for="contentPadding">Espaciado:</label>
+                <input type="number" id="contentPadding" min="0" max="50" value="10"> px
+            </div>
+        </div>
+
+        <div class="config-buttons">
+            <button id="cargarfuente">fuentes</button>
+            <button id="saveConfig">Guardar</button>
+            <button id="applyConfig">Aplicar Ahora</button>
+            <button id="resetConfig">Restablecer</button>
+        </div>
+    </div>
+</div>
 
 <div class="container">
     <div class="left-content" id="book-content">
@@ -76,7 +496,8 @@
         <div id="chapterGrid" class="grid"></div>
      <!--   <div class="content" id="chapter-content">
 
-        </div>  -->
+        </div> -->
+
     </div>
     <div class="content" id="verse-content">
         <div id="verseGrid" class="grid"></div>
@@ -86,6 +507,7 @@
        <!-- <h3 id="resultTitle"></h3>-->
         <div id="resultContent" class="verse-content"></div>
     </div>
+     <div id="searchResults" class="verse-content"></div>
 </div>
 
 <!--<script src="scriptsBibliaM.js" defer></script>-->
