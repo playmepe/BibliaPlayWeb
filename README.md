@@ -1,17 +1,24 @@
 # BibliaPlayWeb
 Proyecte la Biblia y Multimedia sin complicaciones.
+
+Instalación y Configuración:
+Crear una carpeta en la carpeta de usuario por defecto como MULTIMEDIA, dentro de la carpeta puede crear subcarpetas enlaces simbólicos a las carpetas de media.
+Descargue, Instale y Ejecute la aplicación, abrir el navegador http://localhost:4000 una vez se ejecute la aplicación, deberá configurar la carpeta multimedia en la pestaña ConfPantallas, aplicar y luego generar la base de datos desde la pestaña Media. con ese procedimiento debería estar listo para utilizar el app.
+
 Características:
 - Reproductor de imágenes, Audio y Video.
 - Reproduce Listas de videos, Motor para reproducción HTML5.
-- Proyector de Versículos de la biblia; varias versiones
+- Búsqueda, Reproducción y descarga de videos Youtube.
+- Proyector de Versículos de la biblia; Soporte de varias versiones.
 - Proyecta Letras de Canciones
-- Lista de reproducción y lista previa para un mejor control.
+- Lista de reproducción de videos locales como de youtube con reproducción continuo.
 - Editor y Creación de letras de Canciones.
 - Proyecta los versículos de la Biblia con Videos de Fondo
 - Búsqueda y Filtro de Archivos multimedia
 - Descarga de videos youtube, facebook, etc. motor de descarga YT-DLP
 - Todo en uno para la proyección de videos, Imágenes, Biblia, letra de canciones, Conteo regresivo.
 - Aplicación hecho en html, javascript, nodejs, electron.
+  
 https://github.com/playmepe/BibliaPlayWeb/blob/main/aplicaciones.png
 ![2023-12-07_16-44](https://github.com/playmepe/BibliaPlayWeb/blob/main/aplicaciones.png)
 ![2023-12-07_19-24](https://github.com/playmepe/BibliaPlayWeb/blob/main/screen.jpg)
